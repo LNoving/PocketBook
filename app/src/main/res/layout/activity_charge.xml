@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="300dp"
@@ -12,6 +14,8 @@
 
         <TextView
             android:id="@+id/location"
+            android:textColor="#3A5FCD"
+            android:textSize="15sp"
             android:layout_width="300dp"
             android:layout_height="300dp"/>
 
@@ -26,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="24sp"
-            android:textColor="#ff99"
+            android:textColor="#3A5FCD"
             android:text="金额:"/>
         <EditText
             android:id="@+id/edit_amount"
@@ -37,15 +41,31 @@
             android:maxLines="2"/>
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="195dp"
+        android:layout_height="125dp"
+        android:layout_weight="0.05">
+        <!--
         <Button
             android:id="@+id/insert"
             android:layout_gravity="bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="添加"/>
+        -->
+        <com.spark.submitbutton.SubmitButton
+            android:id="@+id/insert"
+            android:layout_width="match_parent"
+            android:layout_height="79dp"
+            android:text=" 记一笔 "
+            android:textSize="15dp"
+            android:textColor="@color/gray"
+            app:sub_btn_background="#CAE1FF"
+            app:sub_btn_duration="900"
+            app:sub_btn_line_color="#3A5FCD"
+            app:sub_btn_ripple_color="#3A5FCD"
+            app:sub_btn_tick_color="@color/white"/>
     </LinearLayout>
 
 </LinearLayout>

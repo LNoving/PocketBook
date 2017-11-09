@@ -21,14 +21,17 @@ import android.widget.Toast;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
+import com.spark.submitbutton.SubmitButton;
 
 public class ChargeActivity extends Activity {
 
     private LocationService locationService;
     private TextView LocationResult;
-    private Button insert;
+//    private Button insert;
+    private SubmitButton insert;
     private EditText editAmount;
     private static Data data;
+    private static boolean locating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +41,22 @@ public class ChargeActivity extends Activity {
         data.setContext(getApplicationContext());
         LocationResult = (TextView) findViewById(R.id.location);
         LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
-        insert = (Button)findViewById(R.id.insert);
+    //    insert = (Button) findViewById(R.id.insert);
+        insert = (SubmitButton)findViewById(R.id.insert) ;
         editAmount = (EditText)findViewById(R.id.edit_amount);
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                double amount = Double.parseDouble(editAmount.getText().toString());
-                data.setPrice(amount);
-                try{
-                    data.insert();
+                if(editAmount.getText().toString().equals("") ){
+                    Toast.makeText(getApplicationContext(), "请输入金额！", Toast.LENGTH_SHORT).show();
                 }
-                finally {}
-                Toast.makeText(getApplicationContext(), "插入成功", Toast.LENGTH_SHORT).show();
+                else {
+                    double amount = Double.parseDouble(editAmount.getText().toString());
+                    data.setPrice(amount);
+                    data.insert();
+                    Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_SHORT).show();
+                    editAmount.setText("");
+                }
             }
         });
 
@@ -92,6 +99,7 @@ public class ChargeActivity extends Activity {
     //@Override
     protected void onStop() {
         // TODO Auto-generated method stub
+        locating = false;
         locationService.unregisterListener(mListener); //注销掉监听
         locationService.stop(); //停止定位服务
         super.onStop();
@@ -138,14 +146,7 @@ public class ChargeActivity extends Activity {
                  */
 
 
-                if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                    data.setLocationValid(1);
-                    Toast.makeText(getApplicationContext(), "定位成功", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    data.setLocationValid(0);
-                    Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_SHORT).show();
-                }
+
                 locationInformation.append("time : ");
                 locationInformation.append(location.getTime());
                 data.setTime(location.getTime());
@@ -180,7 +181,22 @@ public class ChargeActivity extends Activity {
                     locationInformation.append("无法获取有效定位依据导致定位失败，可能的原因" +
                             "有：未开启定位权限、未开启GPS、飞行模式打开等");
                 }
-                //logMsg(sb.toString());
+
+                if (location.getLocType() == BDLocation.TypeNetWorkLocation){
+                    data.setLocationValid(1);
+                    locating = false;
+                    Toast.makeText(getApplicationContext(), "定位成功", Toast.LENGTH_SHORT).show();
+                    locationService.unregisterListener(mListener); //注销掉监听
+                    locationService.stop(); //停止定位服务
+                }
+                else {
+                    if(locating == false){
+                        Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_SHORT).show();
+                        locating = true;
+                        data.setLocationValid(0);
+                    }
+                }
+
                 logMsg(locationInformation.toString());
 
                 /***

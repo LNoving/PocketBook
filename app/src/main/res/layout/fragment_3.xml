@@ -4,10 +4,13 @@
              android:layout_height="match_parent"
              tools:context="cn.edu.zju.accountbook.accountbookdemo.Fragment3">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Fragment3"/>
+        />
+    <!--android:layout_above="@+id/seekBar1" -->
+
+
 
 </FrameLayout>

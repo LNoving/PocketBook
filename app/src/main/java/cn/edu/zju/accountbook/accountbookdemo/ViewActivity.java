@@ -7,9 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import android.widget.RadioGroup;
-import android.widget.TextView;
-
 import cn.edu.zju.accountbook.accountbookdemo.other.MyViewPagerAdapter;
 import me.majiajie.pagerbottomtabstrip.MaterialMode;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
@@ -25,17 +22,6 @@ public class ViewActivity extends AppCompatActivity implements
         Fragment3.OnFragmentInteractionListener,
         Fragment4.OnFragmentInteractionListener
 {
-
-    //UI Objects
-    private TextView txt_topbar;
-    /*
-    private RadioGroup rg_tab_bar;
-
-    private RadioButton rb_channel;
-    private RadioButton rb_message;
-    private RadioButton rb_better;
-    private RadioButton rb_setting;
-    */
 
     NormalItemView item1;
     NormalItemView item2;
@@ -54,7 +40,7 @@ public class ViewActivity extends AppCompatActivity implements
 
 
     int[] testColors = {0xFF455A64, 0xFF00796B, 0xFF795548, 0xFF5B4947, 0xFFF57C00};
-//    int[] testColors = {0xFF009688, 0xFF009688, 0xFF009688, 0xFF009688, 0xFF009688};
+ //   int[] testColors = {0xFF009688, 0xFF009688, 0xFF009688, 0xFF009688, 0xFF009688};
 
     NavigationController mNavigationController;
 
@@ -64,8 +50,6 @@ public class ViewActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
         mAdapter = new MyViewPagerAdapter(getSupportFragmentManager(),/*mNavigationController.getItemCount()*/4);
-//        bindViews();                 //来自菜鸟
-//        rb_channel.setChecked(true);  //来自菜鸟
         /***
          * 把整个表打印在log中
          */
@@ -74,15 +58,17 @@ public class ViewActivity extends AppCompatActivity implements
         PageNavigationView pageBottomTabLayout = (PageNavigationView) findViewById(R.id.tab);
 
         mNavigationController = pageBottomTabLayout.material()
-                .addItem(R.drawable.ic_ondemand_video_black_24dp,"Movies & TV",testColors[0])
-                .addItem(R.drawable.ic_audiotrack_black_24dp, "Music",testColors[1])
-                .addItem(R.drawable.ic_book_black_24dp, "Books",testColors[2])
-                .addItem(R.drawable.ic_news_black_24dp, "Newsstand",testColors[3])
+                .addItem(R.drawable.ic_format_list_bulleted_black_24dp,"Detail",testColors[0])
+                .addItem(R.drawable.ic_pie_chart_black_24dp, "Pie Chart",testColors[1])
+                .addItem(R.drawable.ic_equalizer_black_24dp, "Bar Chart",testColors[2])
+                .addItem(R.drawable.ic_show_chart_black_24dp, "Line Chart",testColors[3])
                 .setDefaultColor(0x89FFFFFF)//未选中状态的颜色
                 .setMode(MaterialMode.CHANGE_BACKGROUND_COLOR | MaterialMode.HIDE_TEXT)//这里可以设置样式模式，总共可以组合出4种效果
                 .build();
 
-
+        Log.v("shiyiha","zhiqian ");
+        mAdapter = new MyViewPagerAdapter(getSupportFragmentManager(),mNavigationController.getItemCount());
+        Log.v("shiyiha","zhihou ");
         /***
          * viewpager的切换？？？
          */
@@ -115,17 +101,18 @@ public class ViewActivity extends AppCompatActivity implements
             }
         });
 
-
+/*
         item1 = newItem(R.drawable.ic_ondemand_video_black_24dp,R.drawable.ic_ondemand_video_black_24dp,"项目1");
         item2 = newItem(R.drawable.ic_audiotrack_black_24dp,R.drawable.ic_audiotrack_black_24dp,"项目2");
         item3 = newItem(R.drawable.ic_book_black_24dp,R.drawable.ic_book_black_24dp,"项目3");
         item4 = newItem(R.drawable.ic_news_black_24dp,R.drawable.ic_news_black_24dp,"项目4");
-
+*/
 
         //设置消息圆点
+        /***
 //        mNavigationController.setMessageNumber(0,12);
 //        mNavigationController.setHasMessage(3,true);
-
+         */
     }
 
 

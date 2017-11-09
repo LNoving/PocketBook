@@ -11,6 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 
+import com.hanks.htextview.HTextView;
+import com.hanks.htextview.HTextViewType;
+
 
 public class MainActivity extends Activity{
 
@@ -22,6 +25,12 @@ public class MainActivity extends Activity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        HTextView hTextView = (HTextView) findViewById(R.id.htext);
+        hTextView.setAnimateType(HTextViewType.LINE);
+        hTextView.animateText("MyAccountBook"); // animate
+        hTextView.reset("Welcome");
+
         Button chargeActivity = findViewById(R.id.charge_activity);  //记账
         chargeActivity.setOnClickListener(new View.OnClickListener() {              //Button
             @Override

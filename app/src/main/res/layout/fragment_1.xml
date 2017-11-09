@@ -5,9 +5,11 @@
              tools:context="cn.edu.zju.accountbook.accountbookdemo.Fragment1">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <zrc.widget.ZrcListView
+        android:id="@+id/fragment1_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fragment1"/>
+        android:layout_height="match_parent">
+
+    </zrc.widget.ZrcListView>
 
 </FrameLayout>

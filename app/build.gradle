@@ -68,5 +68,13 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
 }
 dependencies {
+    compile 'me.spark:submitbutton:1.0.1'
+}
+dependencies {
+    compile 'hanks.xyz:htextview-library:0.1.2'
+}
+
+dependencies {
     compile 'me.majiajie:pager-bottom-tab-strip:2.2.2'
+    compile project(path: ':zrcListView')
 }

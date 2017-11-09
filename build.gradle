@@ -24,6 +24,11 @@ allprojects {
     repositories {
         maven { url "https://jitpack.io" }
     }
+    repositories {
+        maven {
+            url 'https://dl.bintray.com/spark/maven'
+        }
+    }
 }
 
 task clean(type: Delete) {
