@@ -94,15 +94,15 @@ public class Fragment3 extends SimpleFragment implements OnChartGestureListener 
 
 
 
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
+        //Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
 
         mChart.setData(generateBarData(1, 20000, 12));
 
         Legend l = mChart.getLegend();
-        l.setTypeface(tf);
+        //l.setTypeface(tf);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(tf);
+        //leftAxis.setTypeface(tf);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         mChart.getAxisRight().setEnabled(false);

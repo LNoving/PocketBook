@@ -1,15 +1,15 @@
 package cn.edu.zju.accountbook.accountbookdemo;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import android.os.Handler;
 import android.widget.BaseAdapter;
@@ -30,15 +30,6 @@ public class Fragment1 extends Fragment {
     private int pageId = -1;
     private MyAdapter adapter;
     private Bundle mBundle;
-
-    private static final String[][] names = new String[][]{
-            {"加拿大","瑞典","澳大利亚","瑞士","新西兰","挪威","丹麦","芬兰","奥地利","荷兰","德国","日本","比利时","意大利","英国"},
-            {"德国","西班牙","爱尔兰","法国","葡萄牙","新加坡","希腊","巴西","美国","阿根廷","波兰","印度","秘鲁","阿联酋","泰国"},
-            {"智利","波多黎各","南非","韩国","墨西哥","土耳其","埃及","委内瑞拉","玻利维亚","乌克兰"},
-            {"以色列","海地","中国","沙特阿拉伯","俄罗斯","哥伦比亚","尼日利亚","巴基斯坦","伊朗","伊拉克"}
-    };
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,19 +97,21 @@ public class Fragment1 extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                int rand = (int) (Math.random() * 2); // 随机数模拟成功失败。这里从有数据开始。
-                if(rand == 0 || pageId == -1){
+                try{
+
                     pageId = 0;
                     msgs = new ArrayList<String>();
-                    for(String name:names[0]){
-                        msgs.add(name);
+                    List<Record> invertedRecords = RecordLab.get(getActivity()).getInvertedRecords();
+                    Iterator<Record> iterator = invertedRecords.iterator();
+                    for(int i = 0;i<20&&iterator.hasNext();i++){
+                        Record r = iterator.next();
+                        msgs.add(r.getId()+r.getType()+r.getPurpose()+r.getAmount()+
+                                r.getDateTime()+r.getAddress()+r.getLocation()+r.getPhoto());
                     }
                     adapter.notifyDataSetChanged();
                     listView.setRefreshSuccess("加载成功"); // 通知加载成功
                     listView.startLoadMore(); // 开启LoadingMore功能
-                }else{
-                    listView.setRefreshFail("加载失败");
-                }
+                }catch (Exception e) {listView.setRefreshFail("加载失败");}
             }
         }, 2 * 1000);
     }
@@ -128,15 +121,24 @@ public class Fragment1 extends Fragment {
             @Override
             public void run() {
                 pageId++;
-                if(pageId<names.length){
-                    for(String name:names[pageId]){
-                        msgs.add(name);
-                    }
+
+                List<Record> invertedRecords = RecordLab.get(getActivity()).getInvertedRecords();
+                Iterator<Record> iterator = invertedRecords.iterator();
+                for(int i = 0 ;i<(pageId+1)*20&&iterator.hasNext();i++){
+                    if(i<pageId*20)
+                        continue;
+                    Record r = iterator.next();
+                    msgs.add(r.getId()+r.getType()+r.getPurpose()+r.getAmount()+
+                            r.getDateTime()+r.getAddress()+r.getLocation()+r.getPhoto());
+                }
+                if(iterator.hasNext()){
                     adapter.notifyDataSetChanged();
                     listView.setLoadMoreSuccess();
-                }else{
+                }
+                else {
                     listView.stopLoadMore();
                 }
+
             }
         }, 2 * 1000);
     }
@@ -173,5 +175,4 @@ public class Fragment1 extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 }

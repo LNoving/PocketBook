@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,45 +24,58 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
 import com.spark.submitbutton.SubmitButton;
 
+import java.util.UUID;
+
+
 public class ChargeActivity extends Activity {
+
+    private static final String EXTRA_RECORD_ID = "cn.edu.zju.accountbook.accountbookdemo.record_id";
+    private static final String ARG_RECORD_ID = "record_id";
 
     private LocationService locationService;
     private TextView LocationResult;
-//    private Button insert;
     private SubmitButton insert;
     private EditText editAmount;
-    private static Data data;
-    private static boolean locating = false;
+    private Button scanBarCode;
+//    private static Data data;
+    private Record mRecord = new Record();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge);
-        data = new Data(getApplicationContext());
-        data.setContext(getApplicationContext());
         LocationResult = (TextView) findViewById(R.id.location);
         LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
-    //    insert = (Button) findViewById(R.id.insert);
-        insert = (SubmitButton)findViewById(R.id.insert) ;
+        insert = findViewById(R.id.insert);
         editAmount = (EditText)findViewById(R.id.edit_amount);
+        scanBarCode = findViewById(R.id.scan_bar_code);
+
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(editAmount.getText().toString().equals("") ){
+                //double amount = Double.parseDouble(editAmount.getText().toString());
+                if(editAmount.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "请输入金额！", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    double amount = Double.parseDouble(editAmount.getText().toString());
-                    data.setPrice(amount);
-                    data.insert();
-                    Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_SHORT).show();
+                    mRecord.setAmount(editAmount.getText().toString());
+                    RecordLab.get(ChargeActivity.this).addRecord(mRecord);
+                    Toast.makeText(getApplicationContext(), "插入成功", Toast.LENGTH_SHORT).show();
                     editAmount.setText("");
+                    /***
+                     * 等待动画效果结束，退出
+                     */
                 }
             }
         });
 
-    }
+        scanBarCode.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
 
+            }
+        });
+    }
 
 
 
@@ -99,7 +113,6 @@ public class ChargeActivity extends Activity {
     //@Override
     protected void onStop() {
         // TODO Auto-generated method stub
-        locating = false;
         locationService.unregisterListener(mListener); //注销掉监听
         locationService.stop(); //停止定位服务
         super.onStop();
@@ -114,15 +127,6 @@ public class ChargeActivity extends Activity {
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考
         // 其他示例的activity，都是通过此种方式获取locationservice实例的
         locationService.registerListener(mListener);
-        //注册监听
-        /*
-        int type = getIntent().getIntExtra("from", 0);
-        if (type == 0) {
-            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-        } else if (type == 1) {
-            locationService.setLocationOption(locationService.getOption());
-        }
-        */
         locationService.start();
 
     }
@@ -144,29 +148,14 @@ public class ChargeActivity extends Activity {
                 /***
                  * 以下是输出的位置信息  张昊
                  */
-
-
-
-                locationInformation.append("time : ");
-                locationInformation.append(location.getTime());
-                data.setTime(location.getTime());
-                locationInformation.append("\nlocType description : ");// *****对应的定位类型说明*****
-                locationInformation.append(location.getLocTypeDescription());
-                locationInformation.append("\ncity : ");// 城市
-                locationInformation.append(location.getCity());
-                data.setCity(location.getCity());
-                locationInformation.append("\nDistrict : ");// 区
-                locationInformation.append(location.getDistrict());
-                data.setDistrict(location.getDistrict());
-                locationInformation.append("\nStreet :");// 街道
-                locationInformation.append(location.getStreet());
-                data.setStreet(location.getStreet());
                 locationInformation.append("\naddr : ");// 地址信息
                 locationInformation.append(location.getAddrStr());
-                data.setAddress(location.getAddrStr());
+                //data.setAddress(location.getAddrStr());
+                mRecord.setAddress(location.getAddrStr());
                 locationInformation.append("\nDescription :");// 描述
                 locationInformation.append(location.getLocationDescribe());// 位置语义化信息
-                data.setLocationDescribe(location.getLocationDescribe());
+                //data.setLocationDescribe(location.getLocationDescribe());
+                mRecord.setLocation(location.getLocationDescribe());
                 if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
                     locationInformation.append("\ndescribe : ");
                     locationInformation.append("离线定位，无法获取地址信息");
@@ -181,23 +170,17 @@ public class ChargeActivity extends Activity {
                     locationInformation.append("无法获取有效定位依据导致定位失败，可能的原因" +
                             "有：未开启定位权限、未开启GPS、飞行模式打开等");
                 }
-
+                //logMsg(sb.toString());
+                logMsg(locationInformation.toString());
                 if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                    data.setLocationValid(1);
-                    locating = false;
                     Toast.makeText(getApplicationContext(), "定位成功", Toast.LENGTH_SHORT).show();
                     locationService.unregisterListener(mListener); //注销掉监听
-                    locationService.stop(); //停止定位服务
+                    locationService.stop();
                 }
                 else {
-                    if(locating == false){
-                        Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_SHORT).show();
-                        locating = true;
-                        data.setLocationValid(0);
-                    }
+                    mRecord.setLocation(null);
+                    Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_SHORT).show();
                 }
-
-                logMsg(locationInformation.toString());
 
                 /***
                  * 以下是原方法

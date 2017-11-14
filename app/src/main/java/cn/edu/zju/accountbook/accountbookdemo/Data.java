@@ -209,10 +209,10 @@ public class Data {
         return 0;
     }
 
+    /***
+     * 在logcat中打印整个表 调试用
+     */
     public void printTable(){
-        /***
-         * 待添加  判断是否存在表
-         */
         Cursor cursor = db.query("AccountBook",null,null,null,null,null,null);
         if (cursor.moveToFirst()){
             //遍历cursor对象，取出数据并打印

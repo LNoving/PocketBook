@@ -60,18 +60,18 @@ public class Fragment2 extends SimpleFragment
         return v;
     }
 
-    void createView(){
+    private void createView(){
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
+        //Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
 
-        mChart.setCenterTextTypeface(tf);
+        //mChart.setCenterTextTypeface(tf);
         mChart.setCenterText(generateCenterText());
         mChart.setCenterTextSize(10f);
-        mChart.setCenterTextTypeface(tf);
+        //mChart.setCenterTextTypeface(tf);
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.WHITE);

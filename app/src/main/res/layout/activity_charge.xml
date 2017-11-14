@@ -40,20 +40,25 @@
             android:inputType="numberDecimal"
             android:maxLines="2"/>
 
+        <Button
+            android:id="@+id/scan_bar_code"
+            android:layout_width="75dp"
+            android:layout_height="33dp"
+            android:background="@drawable/button"
+            android:paddingBottom="8dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:text="扫描条码"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="195dp"
         android:layout_height="125dp"
         android:layout_weight="0.05">
-        <!--
-        <Button
-            android:id="@+id/insert"
-            android:layout_gravity="bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="添加"/>
-        -->
         <com.spark.submitbutton.SubmitButton
             android:id="@+id/insert"
             android:layout_width="match_parent"

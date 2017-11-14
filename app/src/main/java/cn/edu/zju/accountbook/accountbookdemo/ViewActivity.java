@@ -53,7 +53,7 @@ public class ViewActivity extends AppCompatActivity implements
         /***
          * 把整个表打印在log中
          */
-        data.printTable();
+        RecordLab.get(this).printTable();
 
         PageNavigationView pageBottomTabLayout = (PageNavigationView) findViewById(R.id.tab);
 
@@ -100,14 +100,6 @@ public class ViewActivity extends AppCompatActivity implements
                 Log.i("asd","onRepeat selected: " + index);
             }
         });
-
-/*
-        item1 = newItem(R.drawable.ic_ondemand_video_black_24dp,R.drawable.ic_ondemand_video_black_24dp,"项目1");
-        item2 = newItem(R.drawable.ic_audiotrack_black_24dp,R.drawable.ic_audiotrack_black_24dp,"项目2");
-        item3 = newItem(R.drawable.ic_book_black_24dp,R.drawable.ic_book_black_24dp,"项目3");
-        item4 = newItem(R.drawable.ic_news_black_24dp,R.drawable.ic_news_black_24dp,"项目4");
-*/
-
         //设置消息圆点
         /***
 //        mNavigationController.setMessageNumber(0,12);
@@ -161,7 +153,6 @@ public class ViewActivity extends AppCompatActivity implements
      */
 
     private NormalItemView newItem(int drawable, int checkedDrawable, String text){
-        Log.v("我在鼓楼的夜色中，为你唱花香自来","在别处，沉默，相遇，和期待");
         NormalItemView normalItemView = new NormalItemView(this);
         normalItemView.initialize(drawable,checkedDrawable,text);
         normalItemView.setTextDefaultColor(Color.GRAY);
