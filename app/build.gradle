@@ -3,27 +3,28 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
+    //useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "cn.edu.zju.accountbook.accountbookdemo"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        /*jackOptions{
+            enabled ture
+        }*/
+
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-/*
-    sourceSets {                                                    //baidu map 2017.10.25
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
-*/
+
 
     sourceSets {
         main {
@@ -32,17 +33,18 @@ android {
     }
 }
 
+
 dependencies {
-    provided fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile files('libs/BaiduLBS_Android.jar')
     //baidu map 2017.10.25
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support:design:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
 }
 /***
  * 图表
@@ -77,4 +79,5 @@ dependencies {
 dependencies {
     compile 'me.majiajie:pager-bottom-tab-strip:2.2.2'
     compile project(path: ':zrcListView')
+    compile project(path: ':android')
 }

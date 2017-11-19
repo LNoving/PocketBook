@@ -22,33 +22,54 @@ import android.widget.Toast;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
+import com.google.zxing.client.android.CaptureActivity;
 import com.spark.submitbutton.SubmitButton;
 
+import java.io.FileNotFoundException;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import cn.edu.zju.accountbook.accountbookdemo.barcode.Query;
+
+import static android.content.ContentValues.TAG;
 
 
 public class ChargeActivity extends Activity {
 
     private static final String EXTRA_RECORD_ID = "cn.edu.zju.accountbook.accountbookdemo.record_id";
     private static final String ARG_RECORD_ID = "record_id";
+    private static final int REQUEST_CODE = 1;
 
     private LocationService locationService;
-    private TextView LocationResult;
+    private TextView locationResult;
+    private TextView commodityInformation;
     private SubmitButton insert;
     private EditText editAmount;
     private Button scanBarCode;
-//    private static Data data;
     private Record mRecord = new Record();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge);
-        LocationResult = (TextView) findViewById(R.id.location);
-        LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
+        locationResult = (TextView) findViewById(R.id.location);
+        locationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
+        commodityInformation = findViewById(R.id.commodity);
         insert = findViewById(R.id.insert);
         editAmount = (EditText)findViewById(R.id.edit_amount);
         scanBarCode = findViewById(R.id.scan_bar_code);
+
+        // -----------location config ------------（之前是在OnStart()方法里面）
+        locationService = ((MainApplication) getApplication()).locationService;          //ClassCastException
+        //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考
+        // 其他示例的activity，都是通过此种方式获取locationservice实例的
+        locationService.registerListener(mListener);
+        locationService.start();
 
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +93,44 @@ public class ChargeActivity extends Activity {
         scanBarCode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
+                startActivityForResult(new Intent(ChargeActivity.this, CaptureActivity.class),REQUEST_CODE);
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            Toast.makeText(getApplicationContext(), "扫描成功！", Toast.LENGTH_SHORT).show();
+            String result = data.getExtras().getString("result");//得到新Activity 关闭后返回的数据
+            Log.i("扫描到的结果", result);
+            try{
+                String info = null;
 
+                /*
+                 * Android无法在主线程访问网络
+                 */
+                ExecutorService exec = Executors.newCachedThreadPool();
+                info = exec.submit(new Query(result)).get();
+
+                Log.i("查询到的结果", info);
+
+                if(info == null)
+                    throw new Exception();
+                else {
+                    Toast.makeText(getApplicationContext(), "查询成功！", Toast.LENGTH_SHORT).show();//待修改
+                    commodityInformation.setText(info);
+                    exec.shutdown();
+                }
+
+            }catch (Exception e){
+                Toast.makeText(getApplicationContext(), "查询失败！", Toast.LENGTH_SHORT).show();//待修改
+                //规范化的setText如下 运用了String.format,其中String资源中的&1$s表示第1个参数，字符串
+                commodityInformation.setText(String.format(this.getResources().
+                        getString(R.string.commodity_information_invalid),result));
+            }
+        }
+    }
 
 
     /**
@@ -87,14 +141,14 @@ public class ChargeActivity extends Activity {
     public void logMsg(String str) {
         final String s = str;
         try {
-            if (LocationResult != null){
+            if (locationResult != null){
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        LocationResult.post(new Runnable() {
+                        locationResult.post(new Runnable() {
                             @Override
                             public void run() {
-                                LocationResult.setText(s);
+                                locationResult.setText(s);
                             }
                         });
 
@@ -122,12 +176,7 @@ public class ChargeActivity extends Activity {
     protected void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-        // -----------location config ------------
-        locationService = ((MainApplication) getApplication()).locationService;          //ClassCastException
-        //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考
-        // 其他示例的activity，都是通过此种方式获取locationservice实例的
-        locationService.registerListener(mListener);
-        locationService.start();
+
 
     }
 

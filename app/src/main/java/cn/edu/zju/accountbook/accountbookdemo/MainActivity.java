@@ -18,6 +18,8 @@ import com.hanks.htextview.HTextViewType;
 public class MainActivity extends Activity{
 
     private final static int REQUEST_CODE_ACCESS_COARSE_LOCATION = 1;
+    private final static int REQUEST_CODE_ACCESS_CAMERA = 1;
+
 
 
     @Override
@@ -47,14 +49,15 @@ public class MainActivity extends Activity{
                 startActivity(intent);
             }
         });
-        requestContactPermission();
+        requestLocationPermission();
+        requestCameraPermission();
     }
     /***
      * 获取定位权限
      */
 
 
-    private void requestContactPermission() {
+    private void requestLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -62,6 +65,18 @@ public class MainActivity extends Activity{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.INTERNET
                 },REQUEST_CODE_ACCESS_COARSE_LOCATION);
+            }
+        }
+    }
+
+    private void requestCameraPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                },REQUEST_CODE_ACCESS_CAMERA);
             }
         }
     }
