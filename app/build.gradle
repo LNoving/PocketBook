@@ -2,11 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
     //useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "cn.edu.zju.accountbook.accountbookdemo"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -76,6 +75,9 @@ dependencies {
     compile 'hanks.xyz:htextview-library:0.1.2'
 }
 
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
 dependencies {
     compile 'me.majiajie:pager-bottom-tab-strip:2.2.2'
     compile project(path: ':zrcListView')

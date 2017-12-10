@@ -1,7 +1,7 @@
 package cn.edu.zju.accountbook.accountbookdemo.barcode;
 
 import android.util.Log;
-import android.widget.Toast;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Callable;
-
-import cn.edu.zju.accountbook.accountbookdemo.ChargeActivity;
 
 
 /**
@@ -52,10 +50,10 @@ public class Query implements Callable<String> {
             }
             result = strBuffer.toString();
             //System.out.println(result);
-            if(result!=null)
-                Log.v("查询结果啦啦啦",result);
+            if(result.equals(""))
+                Log.v("没查到啦啦啦",result);//?
             else
-                Log.v("没查到啦啦啦",result);
+                Log.v("查询结果啦啦啦",result);
         }catch (Exception e) {
             e.printStackTrace();
                 Log.v("出错了啦啦啦",result);
@@ -77,7 +75,7 @@ public class Query implements Callable<String> {
     public String call(){
         return query();
     }
-/*
+
     public static void main(String[] args) {
 
         URL url = null;
@@ -99,6 +97,7 @@ public class Query implements Callable<String> {
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Authorization","APPCODE "+appcode);
 
+            System.out.println(url);
             in = new InputStreamReader(connection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(in);
             StringBuffer strBuffer = new StringBuffer();
@@ -124,6 +123,6 @@ public class Query implements Callable<String> {
             }
         }
     }
-*/
+
 
 }

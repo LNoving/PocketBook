@@ -10,6 +10,11 @@
     <string name="commodity_information_invalid">获取商品信息失败\n
     商品EAN－13码：%1$s</string>
 
+    <string name="commodity_info">商品名称：%1$s\n
+        商品价格：%2$s\n
+        商品照片地址：%3$s
+    </string>
+
     <string name="hello_world">Hello world!</string>
     <string name="startlocation">开始定位</string>
     <string name="stoplocation">停止定位</string>
@@ -44,8 +49,7 @@
     <string name="qa_callback_mail">反馈邮箱:loc-bugs@baidu.com</string>
 
 
-
-<!--
+    <!--
     <string name="app_name">Barcode Scanner</string>
 
     -->
@@ -173,8 +177,6 @@
     <string name="result_wifi">Found WLAN Configuration</string>
     <string name="sbc_name">Google Book Search</string>
     <string name="wifi_changing_network">Requesting connection to network\u2026</string>
-
-
 
 
 </resources>

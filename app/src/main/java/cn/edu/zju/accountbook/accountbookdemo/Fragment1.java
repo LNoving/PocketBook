@@ -1,19 +1,30 @@
 package cn.edu.zju.accountbook.accountbookdemo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import android.os.Handler;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import zrc.widget.SimpleFooter;
@@ -88,9 +99,54 @@ public class Fragment1 extends Fragment {
         listView.setAdapter(adapter);
         listView.refresh(); // 主动下拉刷新
 
-        return v;
 
-    //    return inflater.inflate(R.layout.fragment_1, container, false);
+        /***
+         * 点击显示明细
+         */
+        listView.setOnItemClickListener(new ZrcListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(ZrcListView parent, View view, int position, long id) {
+                PhotoDialog photoDialog = new PhotoDialog(getContext(),position);
+                photoDialog.show();
+                Toast.makeText(getContext(),String.valueOf(position), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /***
+         * 长按删除条目
+         */
+        listView.setOnItemLongClickListener(new ZrcListView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(ZrcListView parent, View view, final int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("删除");
+                builder.setMessage("确定删除该条记录？");
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            RecordLab recordLab = RecordLab.get(getActivity());
+                            UUID uuid = recordLab.getInvertedRecords().get(position).getId();
+                            if(!recordLab.deleteRecord(uuid))
+                                throw new Exception();
+                        }catch (Exception e){
+                            Toast.makeText(getContext(),"删除失败", Toast.LENGTH_SHORT).show();
+                        }
+                        Toast.makeText(getContext(),"删除成功", Toast.LENGTH_SHORT).show();
+                        listView.refresh();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;//返回true代表LongClick事件发生时会忽略Click事件
+            }
+        });
+        return v;
     }
 
     private void refresh(){
@@ -98,22 +154,14 @@ public class Fragment1 extends Fragment {
             @Override
             public void run() {
                 try{
-
-                    pageId = 0;
+                    pageId = -1;
                     msgs = new ArrayList<String>();
-                    List<Record> invertedRecords = RecordLab.get(getActivity()).getInvertedRecords();
-                    Iterator<Record> iterator = invertedRecords.iterator();
-                    for(int i = 0;i<20&&iterator.hasNext();i++){
-                        Record r = iterator.next();
-                        msgs.add(r.getId()+r.getType()+r.getPurpose()+r.getAmount()+
-                                r.getDateTime()+r.getAddress()+r.getLocation()+r.getPhoto());
-                    }
                     adapter.notifyDataSetChanged();
                     listView.setRefreshSuccess("加载成功"); // 通知加载成功
                     listView.startLoadMore(); // 开启LoadingMore功能
                 }catch (Exception e) {listView.setRefreshFail("加载失败");}
             }
-        }, 2 * 1000);
+        }, 800);
     }
 
     private void loadMore(){
@@ -121,26 +169,24 @@ public class Fragment1 extends Fragment {
             @Override
             public void run() {
                 pageId++;
-
                 List<Record> invertedRecords = RecordLab.get(getActivity()).getInvertedRecords();
                 Iterator<Record> iterator = invertedRecords.iterator();
                 for(int i = 0 ;i<(pageId+1)*20&&iterator.hasNext();i++){
-                    if(i<pageId*20)
+                    if(i<pageId*20){
+                        iterator.next();
                         continue;
+                    }
                     Record r = iterator.next();
-                    msgs.add(r.getId()+r.getType()+r.getPurpose()+r.getAmount()+
-                            r.getDateTime()+r.getAddress()+r.getLocation()+r.getPhoto());
+                    //msgs.add(r.getId()+r.getType()+r.getPurpose()+r.getAmount()+ r.getDateTime()+r.getAddress()+r.getLocation()+r.getPhoto());
+                    msgs.add(r.getType()+r.getPurpose()+r.getAmount()+ r.getDateTime()+r.getAddress()+r.getLocation());
                 }
-                if(iterator.hasNext()){
-                    adapter.notifyDataSetChanged();
-                    listView.setLoadMoreSuccess();
-                }
-                else {
+                adapter.notifyDataSetChanged();
+                listView.setLoadMoreSuccess();
+                if(!iterator.hasNext()){
                     listView.stopLoadMore();
                 }
-
             }
-        }, 2 * 1000);
+        }, 500);
     }
 
     private class MyAdapter extends BaseAdapter {
@@ -175,4 +221,5 @@ public class Fragment1 extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

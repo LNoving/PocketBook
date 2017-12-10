@@ -80,8 +80,6 @@ public class Fragment3 extends SimpleFragment implements OnChartGestureListener 
         mChart.setDrawBarShadow(false);
         mChart.setDrawGridBackground(false);
 
-
-
         mChart.getAxisLeft().setDrawGridLines(false);
 
 
@@ -95,8 +93,8 @@ public class Fragment3 extends SimpleFragment implements OnChartGestureListener 
 
 
         //Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
-
-        mChart.setData(generateBarData(1, 20000, 12));
+        ChartDataAdapter chartDataAdapter = new ChartDataAdapter(getActivity());
+        mChart.setData(chartDataAdapter.setBarData(1, 20000, 7));
 
         Legend l = mChart.getLegend();
         //l.setTypeface(tf);

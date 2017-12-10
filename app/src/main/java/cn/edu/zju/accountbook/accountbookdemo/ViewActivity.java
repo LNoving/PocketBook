@@ -7,11 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import cn.edu.zju.accountbook.accountbookdemo.other.MyViewPagerAdapter;
+import cn.edu.zju.accountbook.accountbookdemo.myViewPager.MyViewPagerAdapter;
 import me.majiajie.pagerbottomtabstrip.MaterialMode;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageNavigationView;
-import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.item.NormalItemView;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
 
@@ -46,10 +45,8 @@ public class ViewActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Data data = new Data(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        mAdapter = new MyViewPagerAdapter(getSupportFragmentManager(),/*mNavigationController.getItemCount()*/4);
         /***
          * 把整个表打印在log中
          */
@@ -66,9 +63,7 @@ public class ViewActivity extends AppCompatActivity implements
                 .setMode(MaterialMode.CHANGE_BACKGROUND_COLOR | MaterialMode.HIDE_TEXT)//这里可以设置样式模式，总共可以组合出4种效果
                 .build();
 
-        Log.v("shiyiha","zhiqian ");
         mAdapter = new MyViewPagerAdapter(getSupportFragmentManager(),mNavigationController.getItemCount());
-        Log.v("shiyiha","zhihou ");
         /***
          * viewpager的切换？？？
          */
@@ -79,11 +74,15 @@ public class ViewActivity extends AppCompatActivity implements
          */
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new MyViewPagerAdapter(getSupportFragmentManager(),mNavigationController.getItemCount()));
         /***/
         viewPager.setAdapter(mAdapter);
         viewPager.setCurrentItem(0);
         viewPager.addOnPageChangeListener(this);/***/
+
+        /***
+         * 设置ViewPager预加载页面的个数为4
+         */
+        viewPager.setOffscreenPageLimit(3);
 
         //自动适配ViewPager页面切换
         mNavigationController.setupWithViewPager(viewPager);
@@ -115,11 +114,13 @@ public class ViewActivity extends AppCompatActivity implements
 
     //重写ViewPager页面切换的处理方法
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {Log.v("我在鼓楼的夜色中，为你唱花香自来","onPageScrolled");
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
     }
 
     @Override
-    public void onPageSelected(int position) {           Log.v("我在鼓楼的夜色中，为你唱花香自来","onPageSelected");
+    public void onPageSelected(int position) {
+
     }
 
     @Override

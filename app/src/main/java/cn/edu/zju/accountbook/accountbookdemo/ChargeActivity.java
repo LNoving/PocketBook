@@ -1,49 +1,43 @@
 package cn.edu.zju.accountbook.accountbookdemo;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.baidu.location.Poi;
 import com.google.zxing.client.android.CaptureActivity;
 import com.spark.submitbutton.SubmitButton;
 
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOError;
 import java.io.IOException;
-import java.util.UUID;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import cn.edu.zju.accountbook.accountbookdemo.barcode.Query;
-
-import static android.content.ContentValues.TAG;
+import cn.edu.zju.accountbook.accountbookdemo.barcode.BarCodeAnalyse;
 
 
 public class ChargeActivity extends Activity {
 
     private static final String EXTRA_RECORD_ID = "cn.edu.zju.accountbook.accountbookdemo.record_id";
     private static final String ARG_RECORD_ID = "record_id";
-    private static final int REQUEST_CODE = 1;
+    public static final int TAKE_PHOTO = 1;
+    public static final int CROP_PHOTO = 2;
+    private static final int BARCODE_REQUEST_CODE = 3;
 
     private LocationService locationService;
     private TextView locationResult;
@@ -51,26 +45,38 @@ public class ChargeActivity extends Activity {
     private SubmitButton insert;
     private EditText editAmount;
     private Button scanBarCode;
+    private Button takePhoto;
     private Record mRecord = new Record();
+    private Uri imageUri;
+    private ImageView picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge);
-        locationResult = (TextView) findViewById(R.id.location);
+
+        locationResult = findViewById(R.id.location);
         locationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
+
         commodityInformation = findViewById(R.id.commodity);
+
         insert = findViewById(R.id.insert);
-        editAmount = (EditText)findViewById(R.id.edit_amount);
+
+        editAmount = findViewById(R.id.edit_amount);
+
         scanBarCode = findViewById(R.id.scan_bar_code);
 
-        // -----------location config ------------（之前是在OnStart()方法里面）
-        locationService = ((MainApplication) getApplication()).locationService;          //ClassCastException
-        //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考
-        // 其他示例的activity，都是通过此种方式获取locationservice实例的
+        takePhoto = findViewById(R.id.take_photo);
+
+        picture = findViewById(R.id.show_photo);
+
+        locationService = ((MainApplication) getApplication()).locationService;
         locationService.registerListener(mListener);
         locationService.start();
 
+        /***
+         * 记账按钮
+         */
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,38 +96,112 @@ public class ChargeActivity extends Activity {
             }
         });
 
+        /***
+         * 扫描条码按钮
+         */
         scanBarCode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                startActivityForResult(new Intent(ChargeActivity.this, CaptureActivity.class),REQUEST_CODE);
+                startActivityForResult(new Intent(ChargeActivity.this, CaptureActivity.class),BARCODE_REQUEST_CODE);
             }
         });
+
+
+        /***
+         * 拍照按钮
+         */
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //创建file对象，用于存储拍照后的图片
+                File outputImage = new File(Environment.
+                        getExternalStorageDirectory(),mRecord.getId()+".jpg");
+                try{
+                    if(outputImage.exists()){
+                        outputImage.delete();
+                    }
+                    outputImage.createNewFile();
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+                imageUri = Uri.fromFile(outputImage);
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                startActivityForResult(intent,TAKE_PHOTO);//    启动相机程序
+            }
+        });
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
+
+        /***
+         * 处理拍照结果
+         */
+        switch (requestCode){
+            case TAKE_PHOTO:
+                if (resultCode == RESULT_OK){
+                    Intent intent = new Intent("com.android.camera.action.CROP");
+                    intent.setDataAndType(imageUri,"image/*");
+                    intent.putExtra("scale",true);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                    startActivityForResult(intent,CROP_PHOTO);//启动裁剪程序
+                }
+                break;
+            case CROP_PHOTO:
+                if (resultCode == RESULT_OK){
+                    try{
+                        Bitmap bitmap = BitmapFactory.decodeStream
+                                (getContentResolver().openInputStream(imageUri));
+                        picture.setImageBitmap(bitmap);//将裁剪后的照片显示出来
+                        mRecord.setPhoto(imageUri.toString());
+                    }catch (FileNotFoundException e){
+                        e.printStackTrace();
+                        mRecord.setPhoto(null);
+                    }
+                }
+                break;
+            default:break;
+        }
+
+        /***
+         * 处理条码扫描结果
+         */
+        if (requestCode == BARCODE_REQUEST_CODE) {
             Toast.makeText(getApplicationContext(), "扫描成功！", Toast.LENGTH_SHORT).show();
             String result = data.getExtras().getString("result");//得到新Activity 关闭后返回的数据
             Log.i("扫描到的结果", result);
             try{
                 String info = null;
-
-                /*
-                 * Android无法在主线程访问网络
-                 */
                 ExecutorService exec = Executors.newCachedThreadPool();
-                info = exec.submit(new Query(result)).get();
-
+                /***
+                 * 关键
+                 */
+                //info = exec.submit(new Query(result)).get();
+                info = "{\"showapi_res_code\":0,\"showapi_res_error\":\"\",\"showapi_res_body\":{\"spec\":\"\",\"manuName\":\"新乡市和丝露饮品有限公司\",\"ret_code\":0,\"price\":\"3.00\",\"flag\":true,\"trademark\":\"\",\"img\":\"http://app2.showapi.com/img/barCode_img/20160404/9a615820-985b-4e8f-acc7-a324c90bd393.jpg\",\"code\":\"6938166920785\",\"goodsName\":\"苹果醋\",\"zzjb\":\"\",\"note\":" +
+                        "\"\"}}";
                 Log.i("查询到的结果", info);
 
-                if(info == null)
+                if(info.equals("")) {
                     throw new Exception();
-                else {
-                    Toast.makeText(getApplicationContext(), "查询成功！", Toast.LENGTH_SHORT).show();//待修改
-                    commodityInformation.setText(info);
-                    exec.shutdown();
                 }
+                else{
+                    Toast.makeText(getApplicationContext(), "查询成功！", Toast.LENGTH_SHORT).show();//待修改
+                    Log.v("j===",info);
+                    BarCodeAnalyse BarCodeResult = new BarCodeAnalyse(info);
+                    String name = BarCodeResult.getName();
+                    String price = BarCodeResult.getPrice();
+                    String img = BarCodeResult.getImg();
+                    Log.v("jieguo===",name+price+img);
+                    Log.v("j===",info);
+                    commodityInformation.setText(String.format(this.getResources().
+                            getString(R.string.commodity_info),name,
+                            price,img));
+                    editAmount.setText(price);
+                }
+                exec.shutdown();
 
             }catch (Exception e){
                 Toast.makeText(getApplicationContext(), "查询失败！", Toast.LENGTH_SHORT).show();//待修改
@@ -131,8 +211,6 @@ public class ChargeActivity extends Activity {
             }
         }
     }
-
-
     /**
      * 显示请求字符串
      *
@@ -176,8 +254,6 @@ public class ChargeActivity extends Activity {
     protected void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-
-
     }
 
     /*****
@@ -234,11 +310,14 @@ public class ChargeActivity extends Activity {
                 /***
                  * 以下是原方法
                  */
-                sb.append("time : ");
+
+
                  /**
                  * 时间也可以使用systemClock.elapsedRealtime()方法 获取的是自从开机以来，每次回调的时间；
                  * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
                  */
+                 /*
+                sb.append("time : ");
                 sb.append(location.getTime());
                 sb.append("\nlocType : ");// 定位类型
                 sb.append(location.getLocType());
@@ -313,10 +392,8 @@ public class ChargeActivity extends Activity {
                             "飞行模式下一般会造成这种结果，可以试着重启手机");
                 }
                 //logMsg(sb.toString());
+                */
             }
         }
-
     };
-
-
 }

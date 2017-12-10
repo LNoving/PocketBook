@@ -38,7 +38,7 @@
         android:layout_below="@+id/ly_top_bar"/>
         -->
 
-    <cn.edu.zju.accountbook.accountbookdemo.other.NoTouchViewPager
+    <cn.edu.zju.accountbook.accountbookdemo.myViewPager.NoTouchViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

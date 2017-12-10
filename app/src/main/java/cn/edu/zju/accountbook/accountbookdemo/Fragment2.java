@@ -37,10 +37,6 @@ public class Fragment2 extends SimpleFragment
         implements SeekBar.OnSeekBarChangeListener,
         OnChartValueSelectedListener {
 
-    public static Fragment newInstance() {
-        return new Fragment2();
-    }
-
     private PieChart mChart;
     protected boolean isCreate = false;
 
@@ -67,7 +63,6 @@ public class Fragment2 extends SimpleFragment
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
         //Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
-
         //mChart.setCenterTextTypeface(tf);
         mChart.setCenterText(generateCenterText());
         mChart.setCenterTextSize(10f);
@@ -111,6 +106,10 @@ public class Fragment2 extends SimpleFragment
         mChart.setData(generatePieData());
     }
 
+    /***
+     * 张昊
+     * @param isVisibleToUser
+     */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -139,7 +138,6 @@ public class Fragment2 extends SimpleFragment
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-
         if (e == null)
             return;
         Log.i("VAL SELECTED",
