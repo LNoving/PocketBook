@@ -1,24 +1,18 @@
 package cn.edu.zju.accountbook.accountbookdemo;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -42,7 +36,6 @@ public class Fragment4 extends SimpleFragment implements
 
     private LineChart mChart;
     protected boolean isCreate = false;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,13 +100,13 @@ public class Fragment4 extends SimpleFragment implements
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
 
-        LimitLine ll1 = new LimitLine(150f, "Upper Limit");
+        LimitLine ll1 = new LimitLine(40f, "超额消费");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll1.setTextSize(10f);
 
-        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
+        LimitLine ll2 = new LimitLine(20f, "正常消费");
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
         ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
@@ -123,8 +116,8 @@ public class Fragment4 extends SimpleFragment implements
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaximum(200f);
-        leftAxis.setAxisMinimum(-50f);
+        leftAxis.setAxisMaximum(50f);
+        leftAxis.setAxisMinimum(0f);
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
@@ -138,7 +131,7 @@ public class Fragment4 extends SimpleFragment implements
         //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
         // add data
-        setData(15, 100);
+        setData(10);
 
 //        mChart.setVisibleXRange(20);
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
@@ -200,16 +193,18 @@ public class Fragment4 extends SimpleFragment implements
 
 
 
-    private void setData(int count, float range) {
+    private void setData(int count) {
 
-        ArrayList<Entry> values = new ArrayList<Entry>();
+        ArrayList<Entry> values;
 
         values = new ChartDataAdapter(getActivity()).setLineData(count,getActivity());
 
+        /*
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range) + 3;
             values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
         }
+        */
 
         LineDataSet set1;
 

@@ -63,6 +63,13 @@ public class ChartDataAdapter  {
         return d;
     }
 
+    /***
+     * 折线图获取数据
+     * @param dataSets
+     * @param range
+     * @param count
+     * @return
+     */
     public BarData setBarData(int dataSets, float range, int count) {
 
         ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
@@ -70,14 +77,13 @@ public class ChartDataAdapter  {
         for(int i = 0; i < dataSets; i++) {
 
             ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-
 //            entries = FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "stacked_bars.txt");
-
             /***
-             * 获取最近count天的花费总额
+             * 获取最近几笔花费
              */
-            for(int j = 0; j < count; j++) {
-                entries.add(new BarEntry(j, (float)Float.parseFloat(records.get(j).getAmount())));
+            int cnt = count < records.size()?count:records.size();
+            for(int j = 0; j < cnt; j++) {
+                entries.add(new BarEntry(j,Float.parseFloat(records.get(cnt -1 -j).getAmount())));
             }
 
             BarDataSet ds = new BarDataSet(entries, getLabel(i));
@@ -91,7 +97,7 @@ public class ChartDataAdapter  {
     }
 
     /***
-     * 获得折现图的数据。
+     * 获得折现图的数据。得到倒序记录，按日期统计，再倒序输出
      * @param count
      * @param context
      * @return
@@ -103,29 +109,42 @@ public class ChartDataAdapter  {
         String dateTime = records.get(0).getDateTime().substring(0,10);
         float sum = Float.parseFloat(records.get(0).getAmount());
         int cnt = 0;
-        for (int i = 1; cnt < count&&i<records.size(); i++) {
-            try{
-                Log.v("日期:",records.get(i).getDateTime().substring(0,10));
-                if(dateTime.equals(records.get(i).getDateTime().substring(0,10))){
-                    sum+=Float.parseFloat(records.get(i).getAmount());
+        /***
+         * if中按日期加载数据，else中按条目加载数据，加载进的是倒序记录，但图表输出是正序
+         */
+        if(false)
+
+            for (int i = 0; cnt < count&&i<records.size(); i++) {
+                try{
+                    Log.v("日期:",records.get(i).getDateTime().substring(0,10));
+                    if(dateTime.equals(records.get(i).getDateTime().substring(0,10))){
+                        sum+=Float.parseFloat(records.get(i).getAmount());
+                        continue;
+                    }
+                    else {
+                        values.add(new Entry(cnt++, sum, context.getResources().getDrawable(R.drawable.star)));
+                        dateTime = records.get(i).getDateTime().substring(0,10);
+                        Log.v("数字",String.valueOf(sum));
+                        sum = Float.parseFloat(records.get(0).getAmount());
+                    }
+                }catch (Exception e){
                     continue;
                 }
-                else {
-                    values.add(new Entry(cnt++, sum, context.getResources().getDrawable(R.drawable.star)));
-                    dateTime = records.get(i).getDateTime().substring(0,10);
-                    Log.v("数字",String.valueOf(sum));
-                    sum = Float.parseFloat(records.get(0).getAmount());
+            }
+        else
+            for (int i = 0; i < count&&i<records.size(); i++) {
+                try{
+                    sum = Float.parseFloat(records.get(i).getAmount());
+                    values.add(new Entry(i, sum, context.getResources().getDrawable(R.drawable.star)));
+                    cnt++;
+                }catch (Exception e){
+                    continue;
                 }
-            }catch (Exception e){
-                continue;
             }
 
-        }
+
         return values;
     }
-
-
-
 
     private String[] mLabels = new String[] { "Company A", "Company B", "Company C", "Company D", "Company E", "Company F" };
 //    private String[] mXVals = new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec" };

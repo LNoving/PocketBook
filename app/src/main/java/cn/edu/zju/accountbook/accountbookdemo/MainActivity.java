@@ -53,10 +53,8 @@ public class MainActivity extends Activity{
         requestCameraPermission();
     }
     /***
-     * 获取定位权限
+     * 请求定位权限
      */
-
-
     private void requestLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -69,6 +67,9 @@ public class MainActivity extends Activity{
         }
     }
 
+    /***
+     * 请求相机权限
+     */
     private void requestCameraPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -80,6 +81,5 @@ public class MainActivity extends Activity{
             }
         }
     }
-
 
 }

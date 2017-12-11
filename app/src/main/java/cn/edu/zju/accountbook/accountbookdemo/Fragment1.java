@@ -2,9 +2,6 @@ package cn.edu.zju.accountbook.accountbookdemo;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,8 +17,7 @@ import java.util.UUID;
 
 import android.os.Handler;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +32,15 @@ import zrc.widget.ZrcListView.OnStartListener;
 public class Fragment1 extends Fragment {
     private ZrcListView listView;
     private Handler handler;
-    private ArrayList<String> msgs;
+    private ArrayList<String> topics;
+    private ArrayList<String> details;
     private int pageId = -1;
     private MyAdapter adapter;
     private Bundle mBundle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        this.mBundle = savedInstanceState;                   //乱加的
+        this.mBundle = savedInstanceState;
         super.onCreate(savedInstanceState);
     }
 
@@ -155,7 +151,8 @@ public class Fragment1 extends Fragment {
             public void run() {
                 try{
                     pageId = -1;
-                    msgs = new ArrayList<String>();
+                    topics = new ArrayList<String>();
+                    details = new ArrayList<>();
                     adapter.notifyDataSetChanged();
                     listView.setRefreshSuccess("加载成功"); // 通知加载成功
                     listView.startLoadMore(); // 开启LoadingMore功能
@@ -177,8 +174,8 @@ public class Fragment1 extends Fragment {
                         continue;
                     }
                     Record r = iterator.next();
-                    //msgs.add(r.getId()+r.getType()+r.getPurpose()+r.getAmount()+ r.getDateTime()+r.getAddress()+r.getLocation()+r.getPhoto());
-                    msgs.add(r.getType()+r.getPurpose()+r.getAmount()+ r.getDateTime()+r.getAddress()+r.getLocation());
+                    topics.add(r.getTypeString()+"   "+ r.getAmount() + "元");
+                    details.add(r.getPurpose() + " " + r.getDateTime() + r.getLocation());
                 }
                 adapter.notifyDataSetChanged();
                 listView.setLoadMoreSuccess();
@@ -192,11 +189,11 @@ public class Fragment1 extends Fragment {
     private class MyAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return msgs==null ? 0 : msgs.size();
+            return topics ==null ? 0 : topics.size();
         }
         @Override
         public Object getItem(int position) {
-            return msgs.get(position);
+            return topics.get(position);
         }
 
         @Override
@@ -206,14 +203,28 @@ public class Fragment1 extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+
             TextView textView;
+            TextView itemTopic;
+            TextView itemDetail;
+            RelativeLayout relativeLayout;
+
             if(convertView==null) {
                 textView = (TextView) getLayoutInflater(mBundle).inflate(android.R.layout.simple_list_item_1, null);
+                textView = (TextView)getLayoutInflater(mBundle).inflate(android.R.layout.simple_list_item_activated_1,null);
+                relativeLayout = (RelativeLayout)getLayoutInflater(mBundle).inflate(R.layout.item_layout,null);
+
+                Log.v("显示","convertView == null");
             }else{
-                textView = (TextView) convertView;
+                //textView = (TextView) convertView;
+                relativeLayout = (RelativeLayout)convertView;
+                Log.v("显示","convertView == null");
             }
-            textView.setText(msgs.get(position));
-            return textView;
+            itemTopic = relativeLayout.findViewById(R.id.item_topic);
+            itemDetail = relativeLayout.findViewById(R.id.item_detail);
+            itemTopic.setText(topics.get(position));
+            itemDetail.setText(details.get(position));
+            return relativeLayout;
         }
     }
 
