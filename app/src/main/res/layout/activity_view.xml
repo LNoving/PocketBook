@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="View"
+            android:text="账本"
             android:textColor="@color/text_topbar"
             android:textSize="18sp" />
 
@@ -38,7 +38,7 @@
         android:layout_below="@+id/ly_top_bar"/>
         -->
 
-    <cn.edu.zju.accountbook.accountbookdemo.myViewPager.NoTouchViewPager
+    <cn.edu.zju.accountbook.accountbookdemo.view.myViewPager.NoTouchViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

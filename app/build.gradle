@@ -13,7 +13,6 @@ android {
         /*jackOptions{
             enabled ture
         }*/
-
     }
 
 
@@ -30,6 +29,16 @@ android {
             jniLibs.srcDir 'libs'
         }
     }
+
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven {
+        url 'http://dl.bintray.com/gigamole/maven/'
+    }
 }
 
 
@@ -44,12 +53,22 @@ dependencies {
     compile 'com.android.support:design:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'junit:junit:4.12'
+
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+
 }
 /***
  * 图表
  */
 dependencies {
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
 /***
@@ -57,29 +76,25 @@ dependencies {
  */
 
 dependencies {
+    compile 'com.getbase:floatingactionbutton:1.10.1'
+    // floating action button
+    compile 'devlight.io:navigationtabbar:1.2.5'
+    // devlight tabbar
+    compile 'com.github.devlight.navigationtabstrip:navigationtabstrip:+'
+    // navigation tab strip
+    compile 'com.aldoapps:autoformatedittext:0.9.3'
+    // auto format text editor
+    compile 'com.github.yalantis:Side-Menu.Android:1.0.1'
     compile 'com.android.support:support-v4:26.+'
-}
-dependencies {
-    compile 'com.android.support:support-v4:26.+'
-}
-dependencies {
-    compile 'com.android.support:support-v4:26.+'
-}
-dependencies {
-    compile 'com.android.support:support-v4:26.+'
-}
-dependencies {
     compile 'me.spark:submitbutton:1.0.1'
-}
-dependencies {
     compile 'hanks.xyz:htextview-library:0.1.2'
-}
-
-dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
-}
-dependencies {
+    //viewpager
+    compile 'com.github.chenupt.android:springindicator:1.0.2@aar'
+
+
     compile 'me.majiajie:pager-bottom-tab-strip:2.2.2'
     compile project(path: ':zrcListView')
     compile project(path: ':android')
+
 }

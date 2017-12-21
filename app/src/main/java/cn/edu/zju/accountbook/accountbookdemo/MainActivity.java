@@ -14,11 +14,13 @@ import android.widget.Button;
 import com.hanks.htextview.HTextView;
 import com.hanks.htextview.HTextViewType;
 
+import cn.edu.zju.accountbook.accountbookdemo.charge.ChargeActivity;
+import cn.edu.zju.accountbook.accountbookdemo.view.ViewActivity;
+
 
 public class MainActivity extends Activity{
 
-    private final static int REQUEST_CODE_ACCESS_COARSE_LOCATION = 1;
-    private final static int REQUEST_CODE_ACCESS_CAMERA = 1;
+    private final static int REQUEST_CODE_ACCESS = 1;
 
 
 
@@ -45,41 +47,31 @@ public class MainActivity extends Activity{
         viewActivity.setOnClickListener(new View.OnClickListener() {              //Button
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ViewActivity.class);
+                Intent intent = new Intent(MainActivity.this,ShowActivity.class);
                 startActivity(intent);
             }
         });
-        requestLocationPermission();
-        requestCameraPermission();
+
+        requestPermissions();
     }
-    /***
-     * 请求定位权限
+    /**
+     * 请求定位、相机、存储权限
      */
-    private void requestLocationPermission() {
+    private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.INTERNET
-                },REQUEST_CODE_ACCESS_COARSE_LOCATION);
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                },REQUEST_CODE_ACCESS);
             }
         }
     }
 
-    /***
-     * 请求相机权限
-     */
-    private void requestCameraPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,new String[]{
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                },REQUEST_CODE_ACCESS_CAMERA);
-            }
-        }
-    }
+
 
 }

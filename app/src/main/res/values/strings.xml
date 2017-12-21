@@ -7,12 +7,11 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_location">LocationActivity</string>
 
-    <string name="commodity_information_invalid">获取商品信息失败\n
-    商品EAN－13码：%1$s</string>
+    <string name="commodity_information_invalid">Failed to query barcode:%1$s</string>
+    <string name="failed_to_scan">Failed to scan</string>
 
-    <string name="commodity_info">商品名称：%1$s\n
-        商品价格：%2$s\n
-        商品照片地址：%3$s
+    <string name="commodity_info">Name:%1$s\n
+        Price:%2$s\n
     </string>
 
     <string name="hello_world">Hello world!</string>

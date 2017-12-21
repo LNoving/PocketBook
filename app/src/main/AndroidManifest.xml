@@ -72,10 +72,15 @@
         </activity>
         <!-- 这个权限用于在Application标签中声明SERVICE组件,每个APP拥有自己单独的定位SERVICE -->
 
-        <activity android:name=".ChargeActivity">
+        <activity android:name=".charge.ChargeActivity">
         </activity>
-        <activity android:name=".ViewActivity">
+        <activity android:name=".view.ViewActivity">
         </activity>
+        <activity android:name=".ShowActivity">
+
+        </activity>
+        <activity android:name=".IncomeRecordActivity" />
+        <activity android:name=".ExpenditureRecordActivity"/>
     </application>
 
 </manifest>

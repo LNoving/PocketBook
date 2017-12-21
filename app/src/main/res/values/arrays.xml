@@ -59,4 +59,36 @@
     <item>@string/preferences_front_light_auto</item>
     <item>@string/preferences_front_light_off</item>
   </string-array>
+
+  <string-array name="record_type">
+    <item>Income</item>
+    <item>Outcome</item>
+  </string-array>
+
+  <string-array name="colors">
+    <item name="white">#fff</item>
+    <item name="black">#000</item>
+    <item name="red">#ff0000</item>
+    <item name="blue">#2a70f4</item>
+    <item name="orange_1">#ffa600</item>
+    <item name="yellow">#ffc400</item>
+    <item name="orange_2">#ff8000</item>
+  </string-array>
+
+  <string-array name="sources">
+    <item>Cash</item>
+    <item>Card</item>
+    <item>PayPal</item>
+    <item>AliPay</item>
+    <item>WeChat Wallet</item>
+  </string-array>
+
+  <string-array name="purposes">
+    <item>Shopping</item>
+    <item>Clothing</item>
+    <item>Eating</item>
+    <item>Gift</item>
+    <item>Health</item>
+    <item>Others</item>
+  </string-array>
 </resources>

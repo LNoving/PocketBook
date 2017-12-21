@@ -3,6 +3,7 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -28,6 +29,7 @@ allprojects {
         maven {
             url 'https://dl.bintray.com/spark/maven'
         }
+        google()
     }
 }
 

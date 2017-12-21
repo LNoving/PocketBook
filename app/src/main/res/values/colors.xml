@@ -16,5 +16,15 @@
     <color name="text_topbar">#694E42</color>
     <color name="div_white">#E5E5E5</color>
 
+    <color name="orange">#edc008</color>
+    <color name="orange_pressed">#ea8305</color>
+    <color name="orange_dark">#bf6c00</color>
+
+    <color name="red">#ff0000</color>
+    <color name="red_pressed">#de0000</color>
+
+    <color name="blue">#0051ff</color>
+    <color name="blue_pressed">#0039be</color>
+
 
 </resources>

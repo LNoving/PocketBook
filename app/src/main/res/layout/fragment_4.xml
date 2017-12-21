@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="cn.edu.zju.accountbook.accountbookdemo.Fragment4">
+             tools:context="cn.edu.zju.accountbook.accountbookdemo.view.LineChartFragment">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/staticInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="This month"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/thisMonthTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="2017.12"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Outcome"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/outcomeAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Outcome amount"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Income"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/incomeAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Income amount"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Surplus"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/surplusAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Surplus amount"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
