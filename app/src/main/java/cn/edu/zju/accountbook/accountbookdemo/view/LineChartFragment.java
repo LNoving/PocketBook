@@ -76,7 +76,7 @@ public class LineChartFragment extends SimpleFragment implements
         mChart.setDrawGridBackground(false);
 
         // no description text
-        mChart.getDescription().setEnabled(false);
+        mChart.getDescription().setEnabled(true);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
@@ -102,25 +102,31 @@ public class LineChartFragment extends SimpleFragment implements
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
 
-        LimitLine ll1 = new LimitLine(40f, "超额消费");
+        LimitLine ll1 = new LimitLine(500f, "土豪");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll1.setTextSize(10f);
 
-        LimitLine ll2 = new LimitLine(20f, "正常消费");
+        LimitLine ll2 = new LimitLine(0f, "月光");
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll2.setTextSize(10f);
+
+        LimitLine ll3 = new LimitLine(-500f, "吃土");
+        ll3.setLineWidth(4f);
+        ll3.enableDashedLine(10f, 10f, 0f);
+        ll3.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll3.setTextSize(10f);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaximum(50f);
-        leftAxis.setAxisMinimum(0f);
-        //leftAxis.setYOffset(20f);
+        leftAxis.addLimitLine(ll3);
+
+
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
 
@@ -132,8 +138,11 @@ public class LineChartFragment extends SimpleFragment implements
         //mChart.getViewPortHandler().setMaximumScaleY(2f);
         //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
-        // add data
-        setData(10);
+        try {
+            setData(10);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 //        mChart.setVisibleXRange(20);
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
@@ -201,13 +210,6 @@ public class LineChartFragment extends SimpleFragment implements
 
         values = new ChartDataAdapter(getActivity()).setLineData(count,getActivity());
 
-        /*
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
-        }
-        */
-
         LineDataSet set1;
 
         if (mChart.getData() != null &&
@@ -271,10 +273,7 @@ public class LineChartFragment extends SimpleFragment implements
     }
 
 
-
-
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

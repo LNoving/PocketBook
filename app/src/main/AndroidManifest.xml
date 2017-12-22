@@ -61,23 +61,21 @@
             android:value="OopPMn56hufgyPUTXx6EthjfA8hxZLrR"/>
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            android:name=".MainActivity">
         </activity>
-        <!-- 这个权限用于在Application标签中声明SERVICE组件,每个APP拥有自己单独的定位SERVICE -->
 
         <activity android:name=".charge.ChargeActivity">
         </activity>
         <activity android:name=".view.ViewActivity">
         </activity>
-        <activity android:name=".ShowActivity">
+        <activity android:name=".ShowActivity"
+                  android:label="@string/app_name"
+                  android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".IncomeRecordActivity" />
         <activity android:name=".ExpenditureRecordActivity"/>

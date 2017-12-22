@@ -62,11 +62,15 @@ public class BarChartFragment extends SimpleFragment implements OnChartGestureLi
         /***
          * 原先图形加载的位置，现在换成createView()
          */
+        createView();
         return v;
     }
 
+    public void createV(){
+        createView();
+    }
+
     private void createView(){
-        // mChart = new BarChart(getActivity());
         mChart.getDescription().setEnabled(false);
         mChart.setOnChartGestureListener(this);
 
@@ -89,7 +93,12 @@ public class BarChartFragment extends SimpleFragment implements OnChartGestureLi
 
         //Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         ChartDataAdapter chartDataAdapter = new ChartDataAdapter(getActivity());
-        mChart.setData(chartDataAdapter.setBarData(1,  7));
+
+        try {
+            mChart.setData(chartDataAdapter.setBarData(1,  7));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         Legend l = mChart.getLegend();
         //l.setTypeface(tf);
@@ -156,10 +165,8 @@ public class BarChartFragment extends SimpleFragment implements OnChartGestureLi
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isCreate) {
             createView();
-            //相当于Fragment的onResume
-            //在这里处理加载数据等操作
         } else {
-            //相当于Fragment的onPause
+
         }
     }
 
@@ -174,7 +181,6 @@ public class BarChartFragment extends SimpleFragment implements OnChartGestureLi
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

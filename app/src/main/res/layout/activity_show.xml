@@ -9,7 +9,7 @@
     tools:context="cn.edu.zju.accountbook.accountbookdemo.ShowActivity"
     android:layout_gravity="center" >
 
-    <cn.edu.zju.accountbook.accountbookdemo.view.myViewPager.NoTouchViewPager
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/vpager_one"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="321321"/>
-    </cn.edu.zju.accountbook.accountbookdemo.view.myViewPager.NoTouchViewPager>
+    </android.support.v4.view.ViewPager>
 
     
 
@@ -64,8 +64,8 @@
             android:id="@+id/incomeFloatingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/red"
-            fab:fab_colorPressed="@color/red_pressed"
+            fab:fab_colorNormal="@color/pink"
+            fab:fab_colorPressed="@color/pink_pressed"
             app:fab_icon="@mipmap/income"
             app:fab_title="Income"
             app:fab_stroke_visible="true" />
@@ -74,8 +74,8 @@
             android:id="@+id/outcomeFloatingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/blue"
-            fab:fab_colorPressed="@color/blue_pressed"
+            fab:fab_colorNormal="@color/green"
+            fab:fab_colorPressed="@color/green_pressed"
             app:fab_icon="@mipmap/outcome"
             app:fab_title="Outcome"/>
 

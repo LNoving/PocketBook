@@ -155,27 +155,32 @@ public class IncomeRecordActivity extends AppCompatActivity {
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRecord.setAmount(mAmountEditText.getText().toString());
-                mRecord.setDatetime(mDatetimeTextView.getText().toString());
-                switch (sourceId) {
-                    case 0:
-                        mRecord.setType(SALARY);
-                        break;
-                    case 1:
-                        mRecord.setType(BONUS);
-                        break;
-                    case 2:
-                        mRecord.setType(OTHER);
-                        break;
+                try{
+                    float f = Float.valueOf(mAmountEditText.getText().toString());
+                    mRecord.setAmount(String.valueOf(f));
+                    mRecord.setDatetime(mDatetimeTextView.getText().toString());
+                    switch (sourceId) {
+                        case 0:
+                            mRecord.setType(SALARY);
+                            break;
+                        case 1:
+                            mRecord.setType(BONUS);
+                            break;
+                        case 2:
+                            mRecord.setType(OTHER);
+                            break;
+                    }
+                    mRecord.setRemark(mRemarkEditText.getText().toString());
+                    mRecord.setCategory(INCOME);
+                    RecordLab.get(IncomeRecordActivity.this).addRecord(mRecord);
+                    mRecord = new Record();
+                    Toast.makeText(getApplicationContext(), "Charge Succeeded!", Toast.LENGTH_SHORT).show();
+                    mPhoto.setImageResource(R.mipmap.image);
+                    mAmountEditText.setText("");
+                    mRemarkEditText.setText("");
+                }catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "Invalid number!", Toast.LENGTH_SHORT).show();
                 }
-                mRecord.setRemark(mRemarkEditText.getText().toString());
-                mRecord.setCategory(INCOME);
-                RecordLab.get(IncomeRecordActivity.this).addRecord(mRecord);
-                mRecord = new Record();
-                Toast.makeText(getApplicationContext(), "Charge Succeeded!", Toast.LENGTH_SHORT).show();
-                mAmountEditText.setText("");
-                mRemarkEditText.setText("");
-
             }
         });
     }

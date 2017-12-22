@@ -11,6 +11,8 @@ package cn.edu.zju.accountbook.accountbookdemo.cons;
 
 public class CommonConstants {
 
+    public final static int REQUEST_CODE_ACCESS = 1;
+
     public static final int TAKE_PHOTO = 1;
     public static final int CROP_PHOTO = 2;
     public static final int BARCODE_REQUEST_CODE = 3;

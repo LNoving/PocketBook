@@ -10,6 +10,8 @@
     <color name="bg_gray">#00F1F1F1</color>
     <color name="transparent">#00FFFFFF</color>
 
+    <color name="yellow_black">#a0a307</color>
+
     <color name="text_gray">#8D7A71</color>
     <color name="text_white">#FFFFFF</color>
     <color name="text_yellow">#FFC800</color>
@@ -25,6 +27,17 @@
 
     <color name="blue">#0051ff</color>
     <color name="blue_pressed">#0039be</color>
+
+
+    <color name="light_green">#66CC99</color>
+
+
+    <color name="green">#66cc99</color>
+    <color name="green_pressed">#006633</color>
+
+    <color name="pink">#ff6666</color>
+    <color name="pink_pressed">#de0000</color>
+
 
 
 </resources>

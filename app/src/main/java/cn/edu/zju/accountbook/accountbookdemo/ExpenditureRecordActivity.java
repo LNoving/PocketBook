@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +32,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import cn.edu.zju.accountbook.accountbookdemo.charge.BarCodeAnalyse;
-import cn.edu.zju.accountbook.accountbookdemo.charge.ChargeActivity;
 import cn.edu.zju.accountbook.accountbookdemo.charge.LocationService;
 import cn.edu.zju.accountbook.accountbookdemo.charge.Query;
 import cn.edu.zju.accountbook.accountbookdemo.data.*;
@@ -64,7 +62,6 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
     private ImageView mBarcodeImageView;
     private TextView mBarcodeTextView;
     private ImageView mPhoto;
-    private String mPhotoAddress;
     private Button mCancelButton;
     private Button mSubmitButton;
     private Uri imageUri;
@@ -76,7 +73,7 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
     private ArrayList<String> purposesList;
     int purposeId;
 
-    cn.edu.zju.accountbook.accountbookdemo.data.Record mExpenditureRecord;
+    cn.edu.zju.accountbook.accountbookdemo.data.Record mRecord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +98,7 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
         locationService.registerListener(mListener);
         locationService.start();
 
-        mExpenditureRecord = new Record();
+        mRecord = new Record();
 
         purposesList = new ArrayList<String>();
         purposesList.add("Shopping");
@@ -178,7 +175,7 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 File outputImage = new File(Environment.
-                        getExternalStorageDirectory(),mExpenditureRecord.getId()+".jpg");
+                        getExternalStorageDirectory(), mRecord.getId()+".jpg");
                 try{
                     if(outputImage.exists()){
                         outputImage.delete();
@@ -210,37 +207,43 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mExpenditureRecord.setAmount(mAmountEditText.getText().toString());
-                mExpenditureRecord.setDatetime(mDatetimeTextView.getText().toString());
-                switch (purposeId) {
-                    case 0:
-                        mExpenditureRecord.setType(SHOPPING);
-                        break;
-                    case 1:
-                        mExpenditureRecord.setType(CLOTHES);
-                        break;
-                    case 2:
-                        mExpenditureRecord.setType(FOOD);
-                        break;
-                    case 3:
-                        mExpenditureRecord.setType(GIFT);
-                        break;
-                    case 4:
-                        mExpenditureRecord.setType(HEALTH);
-                        break;
-                    case 5:
-                        mExpenditureRecord.setType(OTHER);
-                        break;
+                try{
+                    float f = Float.valueOf(mAmountEditText.getText().toString());
+                    mRecord.setAmount(String.valueOf(f));
+                    mRecord.setDatetime(mDatetimeTextView.getText().toString());
+                    switch (purposeId) {
+                        case 0:
+                            mRecord.setType(SHOPPING);
+                            break;
+                        case 1:
+                            mRecord.setType(CLOTHES);
+                            break;
+                        case 2:
+                            mRecord.setType(FOOD);
+                            break;
+                        case 3:
+                            mRecord.setType(GIFT);
+                            break;
+                        case 4:
+                            mRecord.setType(HEALTH);
+                            break;
+                        case 5:
+                            mRecord.setType(OTHER);
+                            break;
+                    }
+                    mRecord.setLocation(mLocationTextView.getText().toString());
+                    mRecord.setRemark(mRemarkEditText.getText().toString());
+                    mRecord.setCategory(EXPENDITURE);
+                    RecordLab.get(ExpenditureRecordActivity.this).addRecord(mRecord);
+                    mRecord = new cn.edu.zju.accountbook.accountbookdemo.data.Record();
+                    Toast.makeText(getApplicationContext(), "Charge Succeeded!", Toast.LENGTH_SHORT).show();
+                    mPhoto.setImageResource(R.mipmap.image);
+                    mAmountEditText.setText("");
+                    mRemarkEditText.setText("");
+                }catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "Invalid number!", Toast.LENGTH_SHORT).show();
                 }
-                mExpenditureRecord.setLocation(mLocationTextView.getText().toString());
-                mExpenditureRecord.setRemark(mRemarkEditText.getText().toString());
-                mExpenditureRecord.setPhoto(mPhotoAddress);
-                mExpenditureRecord.setCategory(EXPENDITURE);
-                RecordLab.get(ExpenditureRecordActivity.this).addRecord(mExpenditureRecord);
-                mExpenditureRecord = new cn.edu.zju.accountbook.accountbookdemo.data.Record();
-                Toast.makeText(getApplicationContext(), "Charge Succeeded!", Toast.LENGTH_SHORT).show();
-                mAmountEditText.setText("");
-                mRemarkEditText.setText("");
+
 
             }
         });
@@ -256,7 +259,7 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
                     intent.setDataAndType(imageUri,"image/*");
                     intent.putExtra("scale",true);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                    startActivityForResult(intent,CROP_PHOTO);//启动裁剪程序
+                    startActivityForResult(intent,CROP_PHOTO);
                 }
                 break;
             case CROP_PHOTO:
@@ -269,10 +272,10 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
                         mPhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                         mPhoto.setAdjustViewBounds(true);
                         mPhoto.setImageBitmap(bitmap);
-                        mExpenditureRecord.setPhoto(imageUri.toString());
+                        mRecord.setPhoto(imageUri.toString());
                     }catch (FileNotFoundException e){
                         e.printStackTrace();
-                        mExpenditureRecord.setPhoto(null);
+                        mRecord.setPhoto(null);
                     }
                 }
                 break;
@@ -321,34 +324,30 @@ public class ExpenditureRecordActivity extends AppCompatActivity {
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 StringBuffer locationInformation = new StringBuffer(256);
 
-                locationInformation.append(location.getAddrStr()+"\n");
-                mExpenditureRecord.setAddress(location.getAddrStr());
-                locationInformation.append(location.getLocationDescribe());
-                mExpenditureRecord.setLocation(location.getLocationDescribe());
+                mRecord.setAddress(location.getAddrStr());
+                mRecord.setLocation(location.getLocationDescribe());
                 if (location.getLocType() == BDLocation.TypeOffLineLocation) {
-                    locationInformation.append("\ndescribe : ");
                     locationInformation.append("离线定位，无法获取地址信息");
                 } else if (location.getLocType() == BDLocation.TypeServerError) {
-                    locationInformation.append("\ndescribe : ");
                     locationInformation.append("服务端网络定位失败");
                 } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                    locationInformation.append("\ndescribe : ");
                     locationInformation.append("网络不同导致定位失败，请检查网络是否通畅");
                 } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                    locationInformation.append("\ndescribe : ");
                     locationInformation.append("无法获取有效定位依据导致定位失败，可能的原因" +
                             "有：未开启定位权限、未开启GPS、飞行模式打开等");
                 }
                 if (location.getLocType() == BDLocation.TypeNetWorkLocation){
                     Toast.makeText(getApplicationContext(), "定位成功", Toast.LENGTH_SHORT).show();
-                    mLocationTextView.setText(mExpenditureRecord.getLocation());
+                    mLocationTextView.setText(mRecord.getLocation());
                     locationService.unregisterListener(mListener);
                     locationService.stop();
                 }
                 else {
-                    mExpenditureRecord.setLocation(null);
+                    mRecord.setLocation(null);
                     mLocationTextView.setText(locationInformation);
                     Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_SHORT).show();
+                    locationService.unregisterListener(mListener);
+                    locationService.stop();
                 }
             }
         }

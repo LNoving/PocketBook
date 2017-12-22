@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,9 @@ import cn.edu.zju.accountbook.accountbookdemo.R;
 import cn.edu.zju.accountbook.accountbookdemo.cons.CommonConstants;
 import cn.edu.zju.accountbook.accountbookdemo.data.Record;
 import cn.edu.zju.accountbook.accountbookdemo.data.RecordLab;
+
+import static cn.edu.zju.accountbook.accountbookdemo.cons.CommonConstants.EXPENDITURE;
+import static cn.edu.zju.accountbook.accountbookdemo.cons.CommonConstants.INCOME;
 
 /**
  * Created by 张昊 on 2017/12/10.
@@ -51,7 +55,9 @@ public class ChartDataAdapter  {
         ArrayList<PieEntry> entries1 = new ArrayList<PieEntry>();
 
         for(int i = 0; i < size; i++) {
-            sum[records.get(i).getType()]+= Float.parseFloat(records.get(i).getAmount());
+            if(records.get(i).getCategory()==EXPENDITURE){
+                sum[records.get(i).getType()]+= Float.parseFloat(records.get(i).getAmount());
+            }
         }
 
         for(int i =0;i<count;i++){
@@ -83,13 +89,17 @@ public class ChartDataAdapter  {
         for(int i = 0; i < dataSets; i++) {
 
             ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-//            entries = FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "stacked_bars.txt");
             /***
              * 获取最近几笔花费
              */
             int size = count < records.size()?count:records.size();
             for(int j = 0; j < size; j++) {
-                entries.add(new BarEntry(j,Float.parseFloat(records.get(size -1 -j).getAmount())));
+                if(records.get(size -1 -j).getCategory() == EXPENDITURE){
+                    entries.add(new BarEntry(j,Float.parseFloat(records.get(size -1 -j).getAmount())));
+                }
+                else {
+                    continue;
+                }
             }
 
             BarDataSet ds = new BarDataSet(entries, getLabel(i));
@@ -111,7 +121,6 @@ public class ChartDataAdapter  {
     public ArrayList<Entry>  setLineData(int count,Context context){
         ArrayList<Entry> values = new ArrayList<Entry>();
 
-        //Iterator<Record> iterator = records.iterator();
         String dateTime = records.get(0).getDateTime().substring(0,10);
         float sum;
         int size ;
@@ -121,7 +130,6 @@ public class ChartDataAdapter  {
         if(false)
             for (int i = 0; size < count&&i<records.size(); i++) {
                 try{
-                    Log.v("日期:",records.get(i).getDateTime().substring(0,10));
                     if(dateTime.equals(records.get(i).getDateTime().substring(0,10))){
                         sum+=Float.parseFloat(records.get(i).getAmount());
                         continue;
@@ -129,7 +137,6 @@ public class ChartDataAdapter  {
                     else {
                         values.add(new Entry(size++, sum, context.getResources().getDrawable(R.drawable.star)));
                         dateTime = records.get(i).getDateTime().substring(0,10);
-                        Log.v("数字",String.valueOf(sum));
                         sum = Float.parseFloat(records.get(0).getAmount());
                     }
                 }catch (Exception e){
@@ -138,11 +145,16 @@ public class ChartDataAdapter  {
             }
         else{
             size = count<records.size()?count:records.size();
+            sum = 300;
             for (int i = 0; i < size; i++) {
                 try{
-                    sum = Float.parseFloat(records.get(size -1 -i).getAmount());
+                    if(records.get(size -1 -i).getCategory() == INCOME){
+                        sum += Float.parseFloat(records.get(size -1 -i).getAmount());
+                    }
+                    else{
+                        sum -= Float.parseFloat(records.get(size -1 -i).getAmount());
+                    }
                     values.add(new Entry(i, sum, context.getResources().getDrawable(R.drawable.star)));
-                    Log.v("值",String.valueOf(size)+"     "+String.valueOf(i));
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -151,10 +163,7 @@ public class ChartDataAdapter  {
         return values;
     }
 
-
-
     private String[] mLabels = new String[] { "Company A", "Company B", "Company C", "Company D", "Company E", "Company F" };
-//    private String[] mXVals = new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec" };
 
     private String getLabel(int i) {
         return mLabels[i];

@@ -31,22 +31,7 @@
                 android:layout_margin="5dp"
                 android:layout_toEndOf="@id/sourceImage"/>
 
-            <EditText
-                android:id="@+id/amountEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:inputType="numberDecimal"
-                android:layout_alignTop="@+id/incomeImageView"
-                android:layout_toStartOf="@+id/incomeImageView"
-                android:hint="amount"/>
 
-            <ImageView
-                android:id="@+id/incomeImageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="5dp"
-                android:src="@mipmap/income" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -75,7 +60,28 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/amountEditText"
+                android:layout_width="83dp"
+                android:layout_height="40dp"
+                android:inputType="numberDecimal"
+                android:layout_alignTop="@+id/incomeImageView"
+                android:layout_toStartOf="@+id/incomeImageView"
+                android:hint="amount"/>
+
+            <ImageView
+                android:id="@+id/incomeImageView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="5dp"
+                android:src="@mipmap/income" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/remarkEditText"
@@ -85,7 +91,7 @@
                 android:layout_alignTop="@+id/remarkIcon"
                 android:layout_toStartOf="@+id/remarkIcon"
                 android:hint="remarks"
-                android:textSize="20dp"/>
+                android:textSize="17.5sp"/>
 
             <ImageView
                 android:id="@+id/remarkIcon"

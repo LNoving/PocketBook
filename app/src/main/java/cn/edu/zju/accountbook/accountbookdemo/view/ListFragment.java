@@ -190,7 +190,7 @@ public class ListFragment extends Fragment {
                     if(location == null){
                         location = "";
                     }
-                    if(remark == null){
+                    if(remark == null || remark.equals("")){
                         remark = "";
                     }else {
                         remark = "\nRemark: "+remark;

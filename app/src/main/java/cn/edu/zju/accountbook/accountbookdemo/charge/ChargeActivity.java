@@ -204,7 +204,7 @@ public class ChargeActivity extends Activity {
                     Log.v("j===",info);
                     commodityInformation.setText(String.format(this.getResources().
                             getString(R.string.commodity_info),name,
-                            price,img));
+                            price));
                     editAmount.setText(price);
                 }
                 exec.shutdown();

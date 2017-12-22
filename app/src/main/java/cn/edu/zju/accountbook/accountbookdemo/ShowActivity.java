@@ -1,8 +1,13 @@
 package cn.edu.zju.accountbook.accountbookdemo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +20,8 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.util.ArrayList;
 
 import devlight.io.library.ntb.NavigationTabBar;
+
+import static cn.edu.zju.accountbook.accountbookdemo.cons.CommonConstants.REQUEST_CODE_ACCESS;
 
 public class ShowActivity extends AppCompatActivity implements
         ViewPager.OnPageChangeListener{
@@ -36,11 +43,7 @@ public class ShowActivity extends AppCompatActivity implements
 
 
 
-    private TextView mThisMonthTextView;
-    private TextView mOutcomeAmountTextView;
-    private TextView mIncomeAmountTextView;
-    private TextView mSurplusAmountTextView;
-    private ListView mRecordsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +55,6 @@ public class ShowActivity extends AppCompatActivity implements
         mFloatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.floatingActionsMenu);
         mIncomeFloatingAction = (FloatingActionButton) findViewById(R.id.incomeFloatingButton);
         mOutcomeFloatingAction = (FloatingActionButton) findViewById(R.id.outcomeFloatingButton);
-
-        mThisMonthTextView = (TextView) findViewById(R.id.thisMonthTextView);
-        mOutcomeAmountTextView = (TextView) findViewById(R.id.outcomeAmountTextView);
-        mIncomeAmountTextView = (TextView) findViewById(R.id.incomeAmountTextView);
-        mSurplusAmountTextView = (TextView) findViewById(R.id.surplusAmountTextView);
 
 
         // set nav tab bar
@@ -115,21 +113,7 @@ public class ShowActivity extends AppCompatActivity implements
             }
         });
 
-        mNavigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
-            @Override
-            public void onStartTabSelected(NavigationTabBar.Model model, int index) {
-                switch (index){
-                    case 0:vpagerOne.setCurrentItem(PAGE_ONE);break;
-                    case 1:vpagerOne.setCurrentItem(PAGE_TWO);break;
-                    case 2:vpagerOne.setCurrentItem(PAGE_THREE);break;
-                    default:
-                }
-            }
 
-            @Override
-            public void onEndTabSelected(NavigationTabBar.Model model, int index) {
-            }
-        });
 
         vpagerOne = (ViewPager) findViewById(R.id.vpager_one);
         mAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
@@ -138,6 +122,9 @@ public class ShowActivity extends AppCompatActivity implements
         vpagerOne.setOffscreenPageLimit(2);
         vpagerOne.addOnPageChangeListener(this);
 
+        mNavigationTabBar.setViewPager(vpagerOne,PAGE_ONE);
+
+        requestPermissions();
     }
 
     @Override
@@ -152,6 +139,24 @@ public class ShowActivity extends AppCompatActivity implements
 
     @Override
     public void onPageScrollStateChanged(int state) {
+    }
+
+    /**
+     * 请求定位、相机、存储权限
+     */
+    private void requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,new String[]{
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                },REQUEST_CODE_ACCESS);
+            }
+        }
     }
 
 }
