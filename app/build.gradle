@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     //useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "cn.edu.zju.accountbook.accountbookdemo"
+        applicationId "cn.edu.zju.accountbook.mypocketbook"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1

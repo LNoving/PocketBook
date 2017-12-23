@@ -2,31 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/staticInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/orange"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="This month"
-                android:textSize="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
-                android:layout_alignParentStart="true"/>
+                android:text="This month"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                />
 
             <TextView
                 android:id="@+id/thisMonthTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:textSize="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
                 android:gravity="center"
-                android:layout_alignParentEnd="true"/>
+                android:textSize="30sp"/>
 
         </RelativeLayout>
 
@@ -37,19 +46,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Expenditure"
-                android:textSize="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
-                android:layout_alignParentStart="true"/>
+                android:text="Expenditure"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
 
             <TextView
                 android:id="@+id/outcomeAmountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Expenditure amount"
-                android:textSize="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
                 android:gravity="center"
-                android:layout_alignParentEnd="true"/>
+                android:text="Expenditure amount"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
 
         </RelativeLayout>
 
@@ -60,19 +73,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Income"
-                android:textSize="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
-                android:layout_alignParentStart="true"/>
+                android:text="Income"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/incomeAmountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Income amount"
-                android:textSize="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
                 android:gravity="center"
-                android:layout_alignParentEnd="true"/>
+                android:text="Income amount"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
 
         </RelativeLayout>
 
@@ -83,22 +100,46 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Surplus"
-                android:textSize="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
-                android:layout_alignParentStart="true"/>
+                android:text="Surplus"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/surplusAmountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Surplus amount"
-                android:textSize="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
                 android:gravity="center"
-                android:layout_alignParentEnd="true"/>
+                android:text="Surplus amount"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
 
         </RelativeLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/parting_line"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/staticInfo"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="Records List"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+    <zrc.widget.ZrcListView
+        android:id="@+id/main_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/parting_line">
+
+
+    </zrc.widget.ZrcListView>
 
 </RelativeLayout>

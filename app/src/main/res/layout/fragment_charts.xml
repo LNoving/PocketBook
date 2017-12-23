@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <github.chenupt.springindicator.SpringIndicator
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        app:siIndicatorColor="@color/orange"
+        app:siSelectedTextColor="@color/text_gray"
+        app:siTextColor="@color/orange"
+        app:siTextSize="18sp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="49dp"
+            android:src="@drawable/ic_equalizer_black_24dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_pie_chart_black_24dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="49dp"
+            android:src="@drawable/ic_show_chart_black_24dp"/>
+
+    </github.chenupt.springindicator.SpringIndicator>
+
+
+    <View
+        android:id="@+id/parting_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1.5dp"
+        android:layout_below="@+id/indicator"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@color/orange"/>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/charts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/indicator">
+    </android.support.v4.view.ViewPager>
+
+
+</RelativeLayout>

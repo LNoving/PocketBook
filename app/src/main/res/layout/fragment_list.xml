@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="cn.edu.zju.accountbook.mypocketbook.view.lists.ListFragment">
+
+    <TextView
+        android:id="@+id/list_fragment_details"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:text="Details"
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
+
+    <View
+        android:id="@+id/list_parting_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1.5dp"
+        android:layout_alignEnd="@+id/list_fragment_details"
+        android:layout_alignStart="@+id/list_fragment_details"
+        android:layout_below="@+id/list_fragment_details"
+        android:background="@color/orange"/>
+
+    <zrc.widget.ZrcListView
+
+        android:id="@+id/fragment1_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/list_parting_line">
+
+    </zrc.widget.ZrcListView>
+
+</RelativeLayout>

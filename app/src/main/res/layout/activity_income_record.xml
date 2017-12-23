@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="cn.edu.zju.accountbook.accountbookdemo.IncomeRecordActivity">
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context="cn.edu.zju.accountbook.mypocketbook.charge.IncomeChargeActivity">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:fab="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/relativeLayout_1"
@@ -65,10 +63,10 @@
                 android:id="@+id/amountEditText"
                 android:layout_width="83dp"
                 android:layout_height="40dp"
-                android:inputType="numberDecimal"
                 android:layout_alignTop="@+id/incomeImageView"
                 android:layout_toStartOf="@+id/incomeImageView"
-                android:hint="amount"/>
+                android:hint="amount"
+                android:inputType="numberDecimal"/>
 
             <ImageView
                 android:id="@+id/incomeImageView"
@@ -87,8 +85,8 @@
                 android:id="@+id/remarkEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginEnd="10dp"
                 android:layout_alignTop="@+id/remarkIcon"
+                android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@+id/remarkIcon"
                 android:hint="remarks"
                 android:textSize="17.5sp"/>
@@ -111,19 +109,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
+                android:layout_gravity="center"
                 android:text="click the image to take a photo for this record"
-                android:textSize="10dp"
-                android:layout_gravity="center"/>
+                android:textSize="10dp"/>
 
             <ImageView
-                android:id="@+id/photoImageView"
+                android:id="@+id/income_photo_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:scaleType="center"
-                android:src="@mipmap/image"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:scaleType="center"
+                android:src="@mipmap/image">
 
             </ImageView>
 
