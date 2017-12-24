@@ -17,7 +17,7 @@ import java.util.List;
 import cn.edu.zju.accountbook.mypocketbook.R;
 import cn.edu.zju.accountbook.mypocketbook.data.Record;
 import cn.edu.zju.accountbook.mypocketbook.data.RecordLab;
-import cn.edu.zju.accountbook.mypocketbook.exception.NullException;
+import cn.edu.zju.accountbook.mypocketbook.exception.NoDataException;
 
 /**
  * Created by 张昊 on 2017/12/9.
@@ -57,14 +57,14 @@ public class PhotoDialog extends Dialog {
             List<Record> records = RecordLab.get(getOwnerActivity()).getInvertedRecords();
             Record r = records.get(position);
             if(r.getPhoto()==null)
-                throw new NullException();
+                throw new NoDataException();
             else {
                 Uri uri = Uri.parse(r.getPhoto());
                 Bitmap bitmap = BitmapFactory.decodeStream(
                         getContext().getContentResolver().openInputStream(uri));
                 photo.setImageBitmap(bitmap);
             }
-        }catch (NullException e){
+        } catch (NoDataException e) {
             e.printStackTrace();
             layout = inflater.inflate(R.layout.photo_not_found, null);
             nophotos = layout.findViewById(R.id.no_photo);

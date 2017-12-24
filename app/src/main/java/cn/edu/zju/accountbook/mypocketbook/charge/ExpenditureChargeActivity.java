@@ -35,7 +35,7 @@ import cn.edu.zju.accountbook.mypocketbook.MainApplication;
 import cn.edu.zju.accountbook.mypocketbook.R;
 import cn.edu.zju.accountbook.mypocketbook.data.Record;
 import cn.edu.zju.accountbook.mypocketbook.data.RecordLab;
-import cn.edu.zju.accountbook.mypocketbook.exception.NullException;
+import cn.edu.zju.accountbook.mypocketbook.exception.NoDataException;
 
 import static cn.edu.zju.accountbook.mypocketbook.cons.CommonConstants.BARCODE_REQUEST_CODE;
 import static cn.edu.zju.accountbook.mypocketbook.cons.CommonConstants.CLOTHES;
@@ -314,9 +314,8 @@ public class ExpenditureChargeActivity extends AppCompatActivity {
                     result = data.getExtras().getString("result");
                     ExecutorService exec = Executors.newCachedThreadPool();
                     info = exec.submit(new Query(result)).get();
-                    //info = "{\"showapi_res_code\":0,\"showapi_res_error\":\"\",\"showapi_res_body\":{\"spec\":\"\",\"manuName\":\"新乡市和丝露饮品有限公司\",\"ret_code\":0,\"price\":\"3.00\",\"flag\":true,\"trademark\":\"\",\"img\":\"http://app2.showapi.com/img/barCode_img/20160404/9a615820-985b-4e8f-acc7-a324c90bd393.jpg\",\"code\":\"6938166920785\",\"goodsName\":\"苹果醋\",\"zzjb\":\"\",\"note\":\"\"}}";
                     if(info.equals("")) {
-                        throw new NullException();
+                        throw new NoDataException();
                     }
                     else{
                         try{

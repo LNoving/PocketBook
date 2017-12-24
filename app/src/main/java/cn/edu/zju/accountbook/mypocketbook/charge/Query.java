@@ -20,54 +20,6 @@ public class Query implements Callable<String> {
         Query.code = code;
     }
 
-    public static void main(String[] args) {
-
-        URL url = null;
-        HttpURLConnection connection = null;
-        InputStreamReader in = null;
-
-        String result = null;
-        String host = "https://ali-barcode.showapi.com";
-
-        String path = "/barcode";
-        String method = "GET";
-        String appcode = "6df12c0a624348d7bb6a5e6131ee37b6";
-        String code = "6938166920785";
-        String paramter="code=";
-
-        try{
-            url = new URL(host+path+"?"+paramter+code);
-
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Authorization","APPCODE "+appcode);
-
-            System.out.println(url);
-            in = new InputStreamReader(connection.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(in);
-            StringBuffer strBuffer = new StringBuffer();
-            String line = null;
-            while ((line = bufferedReader.readLine()) != null) {
-                strBuffer.append(line);
-            }
-            result = strBuffer.toString();
-            System.out.println(result);
-            Log.v("查詢結果啦啦啦", result);
-        }catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     private String query() {
         URL url = null;
         HttpURLConnection connection = null;
@@ -79,7 +31,6 @@ public class Query implements Callable<String> {
         String path = "/barcode";
         String method = "GET";
         String appcode = "6df12c0a624348d7bb6a5e6131ee37b6";
-        //String code = "6938166920785";
         String paramter="code=";
 
         try{
@@ -97,14 +48,8 @@ public class Query implements Callable<String> {
                 strBuffer.append(line);
             }
             result = strBuffer.toString();
-            //System.out.println(result);
-            if (result.equals(""))
-                Log.v("没查到啦啦啦", result);//?
-            else
-                Log.v("查询结果啦啦啦", result);
         }catch (Exception e) {
             e.printStackTrace();
-            Log.v("出错了啦啦啦", result);
         } finally {
             if (connection != null) {
                 connection.disconnect();

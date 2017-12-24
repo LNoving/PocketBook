@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'zhanghao10126'
+            storeFile file('E:/Android/AccountBookDemo/PocketBook.jks')
+            storePassword 'zhanghao10126'
+        }
+    }
     compileSdkVersion 26
     //useLibrary 'org.apache.http.legacy'
     defaultConfig {
@@ -14,22 +22,21 @@ android {
             enabled ture
         }*/
     }
-
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
-
-
     sourceSets {
         main {
             jniLibs.srcDir 'libs'
         }
     }
-
 }
 
 repositories {
@@ -53,9 +60,7 @@ dependencies {
     compile 'com.android.support:design:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'junit:junit:4.12'
-
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-
 }
 /***
  * 图表

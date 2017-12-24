@@ -18,9 +18,8 @@ allprojects {
         jcenter()
     }
 }
-/***
- * 图表
- */
+
+
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }

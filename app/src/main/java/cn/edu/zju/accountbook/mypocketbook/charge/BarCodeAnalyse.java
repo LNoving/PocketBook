@@ -69,16 +69,4 @@ public class BarCodeAnalyse {
 
     }
 
-
-/*
-    public static void main(String[] args){
-        String a = "{\"showapi_res_code\":0,\"showapi_res_error\":\"\",\"showapi_res_body\":{\"spec\":\"\",\"manuName\":\"新乡市和丝露饮品有限公司\",\"ret_code\":0,\"price\":\"3.00\",\"flag\":true,\"trademark\":\"\",\"img\":\"http://app2.showapi.com/img/barCode_img/20160404/9a615820-985b-4e8f-acc7-a324c90bd393.jpg\",\"code\":\"6938166920785\",\"goodsName\":\"苹果醋\",\"zzjb\":\"\",\"note\":" +
-                "\"\"}}";
-        BarCodeAnalyse B = new BarCodeAnalyse(a);
-        System.out.println(B.getPrice());
-        System.out.println(B.getName());
-        System.out.println( B.getImg());
-    }
-*/
-
 }

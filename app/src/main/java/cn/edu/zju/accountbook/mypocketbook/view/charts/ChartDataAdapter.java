@@ -60,7 +60,9 @@ public class ChartDataAdapter  {
         }
 
         for(int i =0;i<count;i++){
-            entries1.add(new PieEntry(sum[i], CommonConstants.getTypeString(i)));
+            if (sum[i] != 0) {
+                entries1.add(new PieEntry(sum[i], CommonConstants.getTypeString(i)));
+            }
         }
 
         PieDataSet ds1 = new PieDataSet(entries1, "");
