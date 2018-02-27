@@ -1,7 +1,5 @@
 package cn.edu.zju.accountbook.mypocketbook.charge;
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +34,6 @@ public class Query implements Callable<String> {
         try{
             url = new URL(host+path+"?"+paramter+code);
 
-            Log.v("URL啦啦啦", url.toString());
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Authorization","APPCODE "+appcode);
 

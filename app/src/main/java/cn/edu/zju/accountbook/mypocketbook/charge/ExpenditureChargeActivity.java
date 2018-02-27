@@ -270,8 +270,6 @@ public class ExpenditureChargeActivity extends AppCompatActivity {
                 }catch (NumberFormatException e){
                     Toast.makeText(getApplicationContext(), "Invalid number!", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
     }

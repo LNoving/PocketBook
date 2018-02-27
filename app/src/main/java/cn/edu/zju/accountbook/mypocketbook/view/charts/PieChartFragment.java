@@ -118,8 +118,8 @@ public class PieChartFragment extends Fragment
 
     private SpannableString generateCenterText() {
         SpannableString s = new SpannableString("Month\n"+String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1));
-        s.setSpan(new RelativeSizeSpan(2f), 0, 8, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 8, s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2f), 0, 7, 0);
+        s.setSpan(new ForegroundColorSpan(Color.GRAY), 7, s.length(), 0);
         return s;
     }
 

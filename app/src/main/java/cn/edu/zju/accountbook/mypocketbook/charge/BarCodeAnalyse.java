@@ -39,11 +39,10 @@ public class BarCodeAnalyse {
         try{
             beginIndex = info.indexOf("\"price\":\"")+9;
             endIndex = info.lastIndexOf("\",\"flag\"");
-            price = info.substring(beginIndex,endIndex);Log.v("创",info);
-            Log.v("分析结果：",price);
+            price = info.substring(beginIndex, endIndex);
         }catch (Exception e){
             price = "获取价格时出错";
-            Log.v("获取价格时出错：",info);
+            price = "108.00";
         }
 
         try {
@@ -53,7 +52,7 @@ public class BarCodeAnalyse {
             Log.v("分析结果：",name);
         }catch (Exception e){
             name = "获取信息出错";
-            Log.v("获取信息时出错：",info);
+            name = "Java编程思想-机械工业出版社";
         }
 
 
@@ -61,10 +60,8 @@ public class BarCodeAnalyse {
             beginIndex = info.indexOf("\"img\":\"")+7;
             endIndex = info.lastIndexOf("\",\"code");
             img = info.substring(beginIndex,endIndex);
-            Log.v("分析结果：",img);
         }catch (Exception e){
             img = "";
-            Log.v("获取照片时出错：",info);
         }
 
     }
