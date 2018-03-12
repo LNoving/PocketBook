@@ -1,7 +1,7 @@
 # PocketBook
 
 ## 主界面
-！[](https://imgsa.baidu.com/forum/w%3D580/sign=9cc9a5be55ee3d6d22c687c373176d41/bd8e9ac37d1ed21bc30098fca16eddc450da3ffd.jpg)
+![](https://imgsa.baidu.com/forum/w%3D580/sign=9cc9a5be55ee3d6d22c687c373176d41/bd8e9ac37d1ed21bc30098fca16eddc450da3ffd.jpg)
 
 ## 图表
 
